@@ -29,4 +29,6 @@ ln -sf ~/dotfiles/.oh-my-zsh/custom ~/.oh-my-zsh/custom
 # Set Zsh as default shell
 chsh -s $(which zsh)
 
+git clone https://github.com/marlonrichert/zsh-autocomplete.git  ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autocomplete
+
 echo "Installation complete! Please restart your terminal."
