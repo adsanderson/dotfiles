@@ -15,7 +15,7 @@ sudo install lazygit /usr/local/bin
 rm lazygit lazygit.tar.gz
 
 # Install Zellij
-wget https://github.com/zellij-org/zellij/releases/download/v0.40.1/zellij-x86_64-unknown-linux-musl.tar.gz                      
+wget https://github.com/zellij-org/zellij/releases/download/v0.41.1/zellij-x86_64-unknown-linux-musl.tar.gz
 tar -xvf zellij-x86_64-unknown-linux-musl.tar.gz
 rm zellij-x86_64-unknown-linux-musl.tar.gz
 
@@ -29,6 +29,6 @@ ln -sf ~/dotfiles/.oh-my-zsh/custom ~/.oh-my-zsh/custom
 # Set Zsh as default shell
 chsh -s $(which zsh)
 
-git clone https://github.com/marlonrichert/zsh-autocomplete.git  ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autocomplete
+git clone https://github.com/marlonrichert/zsh-autocomplete.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autocomplete
 
 echo "Installation complete! Please restart your terminal."
