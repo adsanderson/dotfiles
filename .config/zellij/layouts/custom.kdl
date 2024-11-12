@@ -1,0 +1,9 @@
+layout {
+    pane // Only one pane by default
+    
+    pane size=1 {
+        plugin location="zellij:status-bar"
+    }
+
+    // Notice we're not including the command-palette pane that creates the top bar
+}
