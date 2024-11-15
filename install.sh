@@ -19,6 +19,11 @@ wget https://github.com/zellij-org/zellij/releases/download/v0.41.1/zellij-x86_6
 tar -xvf zellij-x86_64-unknown-linux-musl.tar.gz
 rm zellij-x86_64-unknown-linux-musl.tar.gz
 
+mkdir -p ~/.config
+mkdir -p ~/.config/nvim
+mkdir -p ~/.config/lazygit
+mkdir -p ~/.config/zellij
+
 # Create symbolic links
 ln -sf ~/dotfiles/.config/nvim ~/.config/nvim
 ln -sf ~/dotfiles/.config/lazygit ~/.config/lazygit
