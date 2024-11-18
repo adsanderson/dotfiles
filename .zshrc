@@ -129,5 +129,24 @@ export PATH="$PATH:/opt/nvim-linux64/bin"
 export PATH="$PATH:/mnt/c/Windows/System32"
 export PATH="$PATH:/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
 
+export PATH="$PATH:$HOME/nvim-linux64/bin"
+# Add path to zellij binary in the dotfiles repo
+export PATH="$PATH:$HOME/dotfiles"
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# fnm
+FNM_PATH="/home/adamin/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/home/adamin/.local/share/fnm:$PATH"
+  eval "`fnm env`"
+fi
+
+# pnpm
+export PNPM_HOME="/home/adamin/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
