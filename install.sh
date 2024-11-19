@@ -31,6 +31,7 @@ if [ -d "$HOME  /.local/share/fnm" ]; then
   fnm install --lts
   npm install -g neovim
   curl -fsSL https://get.pnpm.io/install.sh | sh -
+  pnpm completion zsh >~/completion-for-pnpm.zsh
 fi
 mkdir -p ~/.config
 

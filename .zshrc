@@ -150,3 +150,4 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+source ~/completion-for-pnpm.zsh
