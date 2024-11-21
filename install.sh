@@ -2,7 +2,7 @@
 
 # Install required packages
 sudo apt update
-sudo apt install -y build-essential zsh git curl ripgrep fd-find lua5.4 liblua5.4-dev luarocks
+sudo apt install -y build-essential zsh git curl ripgrep fd-find fzf lua5.4 liblua5.4-dev luarocks
 
 curl -fsSL https://fnm.vercel.app/install | bash
 
@@ -26,7 +26,7 @@ wget https://github.com/zellij-org/zellij/releases/download/v0.41.1/zellij-x86_6
 tar xf zellij-x86_64-unknown-linux-musl.tar.gz
 rm zellij-x86_64-unknown-linux-musl.tar.gz
 
-if [ -d "$HOME  /.local/share/fnm" ]; then
+if [ ! -d "$HOME/.local/share/fnm" ]; then
   curl -fsSL https://fnm.vercel.app/install | zsh
   fnm install --lts
   npm install -g neovim

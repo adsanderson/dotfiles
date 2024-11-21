@@ -82,7 +82,6 @@ plugins=(
     jq
     git
     zsh-autosuggestions
-    nvm
     z
     zsh-autocomplete
     zsh-syntax-highlighting
@@ -137,14 +136,14 @@ export PATH="$PATH:$HOME/dotfiles"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # fnm
-FNM_PATH="/home/adamin/.local/share/fnm"
+FNM_PATH="$HOME/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
-  export PATH="/home/adamin/.local/share/fnm:$PATH"
+  export PATH="$PATH:$HOME/.local/share/fnm"
   eval "`fnm env`"
 fi
 
 # pnpm
-export PNPM_HOME="/home/adamin/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
