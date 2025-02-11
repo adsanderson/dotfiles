@@ -27,7 +27,7 @@ mkdir -p ~/.config ~/.local/bin
 # Install required packages
 log "Installing required packages..."
 sudo apt update || error "Failed to update package list"
-sudo apt install -y build-essential zsh git curl ripgrep fd-find lua5.4 liblua5.4-dev luarocks || error "Failed to install packages"
+sudo apt install -y build-essential zsh git curl ripgrep fd-find fzf lua5.4 liblua5.4-dev luarocks || error "Failed to install packages"
 
 # Install fnm if not already installed
 if ! command -v fnm >/dev/null 2>&1; then
