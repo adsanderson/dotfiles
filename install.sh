@@ -15,9 +15,9 @@ NC='\033[0m' # No Color
 log() { echo -e "${GREEN}[INFO]${NC} $1"; }
 error() { echo -e "${RED}[ERROR]${NC} $1" >&2; exit 1; }
 
-# Check if running on Debian/Ubuntu
+# Check if running on Debian/Ubuntu or Crostini
 if ! command -v apt-get >/dev/null 2>&1; then
-    error "This script requires apt-get. Only Debian/Ubuntu are supported."
+    error "This script requires apt-get. Only Debian/Ubuntu or Crostini are supported."
 fi
 
 # Create necessary directories
@@ -73,7 +73,7 @@ fi
 if [ -d "$HOME/.local/share/fnm" ]; then
     log "Setting up Node.js environment..."
     export PATH="$HOME/.local/share/fnm:$PATH"
-    eval "$(fnm env --use-on-cd)"
+    eval "$(fnm env --use-on-cd --shell=bash)"
     fnm install --lts || error "Failed to install Node.js LTS"
     npm install -g neovim || error "Failed to install neovim npm package"
     
