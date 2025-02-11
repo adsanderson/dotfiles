@@ -148,5 +148,9 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
+
+export FLYCTL_INSTALL="$HOME/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
 # pnpm end
 source ~/completion-for-pnpm.zsh
