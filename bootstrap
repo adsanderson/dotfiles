@@ -65,7 +65,7 @@ fi
 export NIX_CONFIG="${NIX_CONFIG:-}"$'\nexperimental-features = nix-command flakes'
 backup_extension="hm-backup-$(date +%Y%m%d%H%M%S)"
 nix run "$repo#home-manager" -- \
-  switch --backup-extension "$backup_extension" --flake "$repo#$profile"
+  switch -b "$backup_extension" --flake "$repo#$profile"
 
 if command -v mise >/dev/null 2>&1; then
   mise install

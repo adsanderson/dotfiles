@@ -77,11 +77,23 @@ Select explicitly when detection is not what you want:
 ./bootstrap server
 ```
 
-The bootstrap installs only Nix when it is missing, runs standalone Home Manager, then installs global mise tools. It does not install desktop or system packages. Before activation, Home Manager renames colliding files with a timestamped `hm-backup-*` extension instead of deleting them. Inspect without changing anything:
+The bootstrap installs only Nix when it is missing, runs the repository-pinned standalone Home Manager, then installs global mise tools. It does not install desktop or system packages. Before activation, Home Manager's supported `-b` option renames colliding files with a timestamped `hm-backup-*` extension instead of deleting them. Inspect without changing anything:
 
 ```bash
 ./bootstrap laptop --check
 ```
+
+### Container smoke test
+
+With a working Docker daemon, exercise the fresh-user `work-wsl` bootstrap in an Arch container:
+
+```bash
+./tests/container-bootstrap
+```
+
+The build installs Nix through `bootstrap`, activates Home Manager twice, verifies representative managed links, confirms that a pre-existing Git config is backed up exactly once, and proves reactivation is idempotent. It empties the mise tool list only inside the image so the bootstrap test does not download unrelated third-party CLIs.
+
+A container does not emulate the WSL kernel, Windows interop, systemd, or `wslview`. It validates the Arch userspace, Nix installation, Home Manager activation, and collision handling; the real WSL instance still needs a final smoke run.
 
 ### Laptop prerequisites
 

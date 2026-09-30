@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo=$(cd -L -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -L)
+
+docker build \
+  --pull \
+  --progress=plain \
+  --file "$repo/tests/bootstrap.Dockerfile" \
+  --tag dotfiles-bootstrap-test \
+  "$repo"
