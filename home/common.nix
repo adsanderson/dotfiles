@@ -29,7 +29,12 @@ in {
 
   home.file = {
     ".gitconfig".source = outOfStore "config/git/config";
-    ".inputrc".source = outOfStore "config/shell/inputrc";
+    ".inputrc" = {
+      source = outOfStore "config/shell/inputrc";
+      # Home Manager's backup mode intentionally excludes foreign symlinks.
+      # Replacing the link is safe: its target remains untouched.
+      force = true;
+    };
   };
 
   xdg.enable = true;

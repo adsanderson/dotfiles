@@ -77,7 +77,7 @@ Select explicitly when detection is not what you want:
 ./bootstrap server
 ```
 
-The bootstrap installs only Nix when it is missing, runs the repository-pinned standalone Home Manager, then installs global mise tools. It does not install desktop or system packages. Before activation, Home Manager's supported `-b` option renames colliding files with a timestamped `hm-backup-*` extension instead of deleting them. Inspect without changing anything:
+The bootstrap installs only Nix when it is missing, runs the repository-pinned standalone Home Manager, then installs global mise tools. It does not install desktop or system packages. Before activation, Home Manager's supported `-b` option renames colliding regular files and directories with a timestamped `hm-backup-*` extension instead of deleting them. Home Manager deliberately refuses to back up foreign symlinks, so the managed `.inputrc` explicitly replaces an existing link while leaving that link's target untouched. Inspect without changing anything:
 
 ```bash
 ./bootstrap laptop --check
@@ -91,7 +91,7 @@ With a working Docker daemon, exercise the fresh-user `work-wsl` bootstrap in an
 ./tests/container-bootstrap
 ```
 
-The build installs Nix through `bootstrap`, activates Home Manager twice, verifies representative managed links, confirms that a pre-existing Git config is backed up exactly once, and proves reactivation is idempotent. It empties the mise tool list only inside the image so the bootstrap test does not download unrelated third-party CLIs.
+The build installs Nix through `bootstrap`, activates Home Manager twice, verifies representative managed links, confirms that a pre-existing Git config is backed up exactly once, exercises the `.inputrc` foreign-symlink cutover, and proves reactivation is idempotent. It empties the mise tool list only inside the image so the bootstrap test does not download unrelated third-party CLIs.
 
 A container does not emulate the WSL kernel, Windows interop, systemd, or `wslview`. It validates the Arch userspace, Nix installation, Home Manager activation, and collision handling; the real WSL instance still needs a final smoke run.
 
@@ -109,6 +109,8 @@ Home Manager intentionally does not enable or replace current user systemd units
 ### WSL prerequisites
 
 Use an Arch-based WSL distribution with `git` and `curl`. The profile installs no desktop stack and no user services. When `wslview` is already available, it becomes `BROWSER`; otherwise no browser integration is forced.
+
+If activation stops during `checkLinkTargets`, no managed links have been changed yet; correct the reported ownership conflict and rerun `./bootstrap work-wsl`. A completed Nix installation is reused automatically.
 
 ### VPS prerequisites
 
