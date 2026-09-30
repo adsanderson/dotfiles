@@ -26,7 +26,7 @@ Home Manager owns stable portable CLI programs and user configuration:
 - editable files under `config/`, including portable GitHub CLI and OpenCode preferences
 - desktop-only terminal, Compose, Hyprland, Omarchy shell, and `kvm-toggle` configuration
 
-Herdr's editable configuration is portable and common-owned, but the Herdr binary remains a native/vendor-installed tool because it is not in the stable Home Manager package set.
+Herdr is the default multiplexer: Home Manager installs it from the pinned nixpkgs, and interactive zsh starts or reattaches to the persistent session in plain terminals (not inside tmux, Herdr, or VS Code). Set `HERDR_AUTOSTART=0` to skip it for one terminal.
 
 Most terminal behavior is in `home/common.nix`. `home/desktop.nix`, `home/wsl.nix`, and `home/server.nix` contain explicit profile differences.
 

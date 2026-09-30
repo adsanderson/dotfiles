@@ -8,6 +8,7 @@
     fzf
     gh
     git
+    herdr
     jq
     lazygit
     mise

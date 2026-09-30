@@ -48,3 +48,11 @@ emulate ksh -c 'source "$HOME/dotfiles/config/shell/functions.sh"'
 if command -v herdr >/dev/null 2>&1; then
   emulate ksh -c 'source "$HOME/dotfiles/config/shell/herdr.sh"'
 fi
+
+# Start (or reattach to) the persistent Herdr session in plain terminals.
+# Opt out per terminal with HERDR_AUTOSTART=0; detaching returns to this shell.
+if [[ -z ${HERDR_PANE_ID:-} && -z ${TMUX:-} && ${HERDR_AUTOSTART:-1} != 0 ]] \
+    && [[ -t 0 && -t 1 && ${TERM:-} != dumb && ${TERM_PROGRAM:-} != vscode ]] \
+    && command -v herdr >/dev/null 2>&1; then
+  herdr
+fi
