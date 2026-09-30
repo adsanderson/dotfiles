@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: ./bootstrap [laptop|work-wsl|server] [--check]
+
+With no profile, WSL is detected from /proc; an Omarchy/Hyprland session selects
+laptop; everything else selects server. --check validates without installing or
+applying anything.
+EOF
+}
+
+profile=""
+check_only=false
+for arg in "$@"; do
+  case "$arg" in
+    laptop|work-wsl|server) profile=$arg ;;
+    --check) check_only=true ;;
+    -h|--help) usage; exit 0 ;;
+    *) usage >&2; exit 2 ;;
+  esac
+done
+
+if [[ -z $profile ]]; then
+  if grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null; then
+    profile=work-wsl
+  elif [[ -n ${HYPRLAND_INSTANCE_SIGNATURE:-} ]] || [[ -x /usr/share/omarchy/bin/omarchy ]]; then
+    profile=laptop
+  else
+    profile=server
+  fi
+fi
+
+repo=$(cd -L -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -L)
+expected="$HOME/dotfiles"
+
+printf 'Profile: %s\n' "$profile"
+printf 'Repository: %s\n' "$repo"
+
+if [[ $repo != "$expected" ]]; then
+  printf 'This repository must be at %s because editable Home Manager links use that stable path.\n' "$expected" >&2
+  exit 1
+fi
+
+if $check_only; then
+  command -v nix >/dev/null 2>&1 \
+    && printf 'Nix: %s\n' "$(command -v nix)" \
+    || printf 'Nix: not installed (bootstrap will install it)\n'
+  printf 'Check complete; no changes made.\n'
+  exit 0
+fi
+
+if ! command -v nix >/dev/null 2>&1; then
+  command -v curl >/dev/null 2>&1 || {
+    printf 'curl is required to install Nix; install it with the native package manager.\n' >&2
+    exit 1
+  }
+  printf 'Installing Nix in single-user mode...\n'
+  curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
+  # shellcheck source=/dev/null
+  source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+fi
+
+export NIX_CONFIG="${NIX_CONFIG:-}"$'\nexperimental-features = nix-command flakes'
+backup_extension="hm-backup-$(date +%Y%m%d%H%M%S)"
+nix run "$repo#home-manager" -- \
+  switch --backup-extension "$backup_extension" --flake "$repo#$profile"
+
+if command -v mise >/dev/null 2>&1; then
+  mise install
+else
+  printf 'Open a new shell, then run: mise install\n'
+fi
+
+printf 'Applied Home Manager profile %s.\n' "$profile"

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+current=$(ddcutil getvcp 60 --display 1 --brief 2>/dev/null | awk '{print $4}')
+if [[ $current == x1b ]]; then
+  ddcutil setvcp 60 0x11 --display 1
+else
+  ddcutil setvcp 60 0x1b --display 1
+fi
