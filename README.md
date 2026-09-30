@@ -22,7 +22,7 @@ The laptop profile configures user-facing parts of an existing Omarchy installat
 
 Home Manager owns stable portable CLI programs and user configuration:
 
-- Bash, Git, Neovim, tmux, Herdr configuration, btop, lazygit, fzf, ripgrep, fd, jq, zoxide, starship, mise, bat, eza, and GitHub CLI
+- zsh (login shell, set by bootstrap) and Bash, Git, Neovim, tmux, Herdr configuration, btop, lazygit, fzf, ripgrep, fd, jq, zoxide, starship, mise, bat, eza, and GitHub CLI
 - editable files under `config/`, including portable GitHub CLI and OpenCode preferences
 - desktop-only terminal, Compose, Hyprland, Omarchy shell, and `kvm-toggle` configuration
 
@@ -77,7 +77,7 @@ Select explicitly when detection is not what you want:
 ./bootstrap server
 ```
 
-The bootstrap installs only Nix when it is missing, runs the repository-pinned standalone Home Manager, then installs global mise tools. Managed Bash login and interactive startup source the single-user Nix profile, so later bootstrap runs reuse the installation. The bootstrap does not install desktop or system packages. Before activation, Home Manager's supported `-b` option renames colliding regular files and directories with a timestamped `hm-backup-*` extension instead of deleting them. Home Manager deliberately refuses to back up foreign symlinks, so the managed `.inputrc` explicitly replaces an existing link while leaving that link's target untouched. Inspect without changing anything:
+The bootstrap installs only Nix when it is missing, runs the repository-pinned standalone Home Manager, then installs global mise tools. Managed zsh and Bash login and interactive startup source the single-user Nix profile, so later bootstrap runs reuse the installation. Home Manager cannot change the login shell, so the bootstrap runs `chsh` to the system zsh from `/etc/shells` when run from a terminal, and otherwise prints the command. The bootstrap does not install desktop or system packages. Before activation, Home Manager's supported `-b` option renames colliding regular files and directories with a timestamped `hm-backup-*` extension instead of deleting them. Home Manager deliberately refuses to back up foreign symlinks, so the managed `.inputrc` explicitly replaces an existing link while leaving that link's target untouched. Inspect without changing anything:
 
 ```bash
 ./bootstrap laptop --check

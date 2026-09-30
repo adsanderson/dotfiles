@@ -1,0 +1,50 @@
+# Portable interactive zsh configuration; mirrors bashrc and inputrc.
+[[ -o interactive ]] || return
+
+export EDITOR="${EDITOR:-nvim}"
+export VISUAL="${VISUAL:-$EDITOR}"
+export SUDO_EDITOR="${SUDO_EDITOR:-$EDITOR}"
+export BAT_THEME="${BAT_THEME:-ansi}"
+export MANROFFOPT="${MANROFFOPT:--c}"
+export MANPAGER="${MANPAGER:-sh -c 'col -bx | bat -l man -p'}"
+
+case ":$PATH:" in
+  *":$HOME/.local/bin:"*) ;;
+  *) export PATH="$HOME/.local/bin:$PATH" ;;
+esac
+
+setopt AUTO_CD EXTENDED_GLOB INTERACTIVE_COMMENTS NO_BEEP
+setopt HIST_IGNORE_SPACE HIST_IGNORE_DUPS HIST_REDUCE_BLANKS HIST_VERIFY SHARE_HISTORY
+setopt COMPLETE_IN_WORD ALWAYS_TO_END MENU_COMPLETE
+
+# Completion behaviour matching inputrc.
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=* l:|=*'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu select
+zstyle ':completion:*' special-dirs false
+
+# Key bindings matching inputrc.
+bindkey '^[[A' history-search-backward
+bindkey '^[[B' history-search-forward
+bindkey '^[[Z' reverse-menu-complete
+
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
+fi
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+fi
+if command -v fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
+fi
+if [[ ${TERM:-} != dumb ]] && command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
+
+source "$HOME/dotfiles/config/shell/aliases.sh"
+# The shared functions are written for bash (0-based arrays, word splitting);
+# ksh emulation is sticky, so they keep bash-like semantics when called.
+emulate ksh -c 'source "$HOME/dotfiles/config/shell/functions.sh"'
+if command -v herdr >/dev/null 2>&1; then
+  emulate ksh -c 'source "$HOME/dotfiles/config/shell/herdr.sh"'
+fi

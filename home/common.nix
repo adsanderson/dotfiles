@@ -36,6 +36,26 @@ in {
       source "${dotfilesRoot}/config/shell/bashrc"
     '';
   };
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    defaultKeymap = "emacs";
+    history = {
+      size = 32768;
+      save = 32768;
+    };
+    profileExtra = ''
+      if [[ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
+        . "$HOME/.nix-profile/etc/profile.d/nix.sh"
+      fi
+    '';
+    initContent = ''
+      if [[ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
+        . "$HOME/.nix-profile/etc/profile.d/nix.sh"
+      fi
+      source "${dotfilesRoot}/config/shell/zshrc"
+    '';
+  };
 
   home.file = {
     ".gitconfig".source = outOfStore "config/git/config";

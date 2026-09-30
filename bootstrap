@@ -74,6 +74,21 @@ backup_extension="hm-backup-$(date +%Y%m%d%H%M%S)"
 nix run "$repo#home-manager" -- \
   switch -b "$backup_extension" --flake "$repo#$profile"
 
+# Home Manager cannot change the login shell, so point it at a zsh that the
+# system accepts (listed in /etc/shells); Nix's zsh usually is not.
+login_shell=$(getent passwd "$USER" | cut -d: -f7)
+if [[ $(basename -- "$login_shell") != zsh ]]; then
+  zsh_path=$(grep -m1 -E '^/.*/zsh$' /etc/shells || true)
+  if [[ -z $zsh_path ]]; then
+    printf 'Login shell is %s; install zsh with the native package manager, then run: chsh -s /usr/bin/zsh\n' "$login_shell"
+  elif [[ -t 0 ]]; then
+    printf 'Changing login shell from %s to %s...\n' "$login_shell" "$zsh_path"
+    chsh -s "$zsh_path" || printf 'chsh failed; run it manually: chsh -s %s\n' "$zsh_path"
+  else
+    printf 'Login shell is %s; run: chsh -s %s\n' "$login_shell" "$zsh_path"
+  fi
+fi
+
 if command -v mise >/dev/null 2>&1; then
   mise install
 else
