@@ -32,7 +32,7 @@ Most terminal behavior is in `home/common.nix`. `home/desktop.nix`, `home/wsl.ni
 
 ### mise
 
-`config/mise/config.toml` owns fast-moving global developer CLIs: Claude Code, Codex, Gemini CLI, OpenCode, oh-my-pi, and uv. Run `mise up` to update them.
+`config/mise/config.toml` owns fast-moving global developer CLIs: Claude Code, Codex, Gemini CLI, OpenCode, oh-my-pi, and uv. Run `mise up` to update them. `MISE_UPGRADE_AUTO_PRUNE=false` is exported by Home Manager so old tool versions remain until an explicit `mise prune`.
 
 A repository owns its language/runtime versions. Node, pnpm, Python, Go, Terraform, and project-specific tools belong in that repository's `mise.toml`, not in `home/packages.nix` or the global mise config.
 
@@ -77,7 +77,7 @@ Select explicitly when detection is not what you want:
 ./bootstrap server
 ```
 
-The bootstrap installs only Nix when it is missing, runs the repository-pinned standalone Home Manager, then installs global mise tools. It does not install desktop or system packages. Before activation, Home Manager's supported `-b` option renames colliding regular files and directories with a timestamped `hm-backup-*` extension instead of deleting them. Home Manager deliberately refuses to back up foreign symlinks, so the managed `.inputrc` explicitly replaces an existing link while leaving that link's target untouched. Inspect without changing anything:
+The bootstrap installs only Nix when it is missing, runs the repository-pinned standalone Home Manager, then installs global mise tools. Managed Bash login and interactive startup source the single-user Nix profile, so later bootstrap runs reuse the installation. The bootstrap does not install desktop or system packages. Before activation, Home Manager's supported `-b` option renames colliding regular files and directories with a timestamped `hm-backup-*` extension instead of deleting them. Home Manager deliberately refuses to back up foreign symlinks, so the managed `.inputrc` explicitly replaces an existing link while leaving that link's target untouched. Inspect without changing anything:
 
 ```bash
 ./bootstrap laptop --check

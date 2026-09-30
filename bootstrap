@@ -43,6 +43,13 @@ if [[ $repo != "$expected" ]]; then
   exit 1
 fi
 
+if ! command -v nix >/dev/null 2>&1 \
+    && [[ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
+  # Reuse a single-user installation that the current shell has not loaded.
+  # shellcheck source=/dev/null
+  source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+fi
+
 if $check_only; then
   command -v nix >/dev/null 2>&1 \
     && printf 'Nix: %s\n' "$(command -v nix)" \

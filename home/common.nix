@@ -13,6 +13,8 @@ in {
     sessionVariables = {
       EDITOR = "nvim";
       SUDO_EDITOR = "nvim";
+      # Preserve upgraded tool versions until an explicit `mise prune`.
+      MISE_UPGRADE_AUTO_PRUNE = "false";
       VISUAL = "nvim";
     };
   };
@@ -22,7 +24,15 @@ in {
     historyControl = [ "ignoreboth" ];
     historyFileSize = 32768;
     historySize = 32768;
+    profileExtra = ''
+      if [[ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
+        . "$HOME/.nix-profile/etc/profile.d/nix.sh"
+      fi
+    '';
     initExtra = ''
+      if [[ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
+        . "$HOME/.nix-profile/etc/profile.d/nix.sh"
+      fi
       source "${dotfilesRoot}/config/shell/bashrc"
     '';
   };
