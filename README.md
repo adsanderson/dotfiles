@@ -14,9 +14,9 @@ Profile usernames are declared beside the targets in `flake.nix`. They currently
 
 ### Native OS package manager
 
-The OS owns the machine: Hyprland, the desktop shell, Wayland portals, PipeWire, display/login tools, drivers, Bluetooth, Docker and other system services, GUI applications, and desktop fonts. This repository does not turn Arch, WSL, or a VPS into NixOS.
+The OS owns the machine: Hyprland, the desktop shell, Wayland portals, PipeWire, display/login tools, drivers, Bluetooth, Docker and other system services, GUI applications, and system-wide fonts. This repository does not turn Arch, WSL, or a VPS into NixOS.
 
-The laptop profile manages only standalone user configuration. System desktop configuration remains native-OS-owned.
+The laptop profile manages standalone user configuration, including its user-level font default. System desktop configuration remains native-OS-owned.
 
 ### Home Manager
 
@@ -24,7 +24,7 @@ Home Manager owns stable portable CLI programs and user configuration:
 
 - zsh (login shell, set by bootstrap) and Bash, Git, Neovim, tmux, Herdr configuration, btop, lazygit, fzf, ripgrep, fd, jq, zoxide, starship, mise, bat, eza, and GitHub CLI
 - editable files under `config/`, including portable GitHub CLI and OpenCode preferences
-- desktop-only terminal, Compose, and `kvm-toggle` configuration
+- desktop-only terminal, Compose, `kvm-toggle`, and JetBrains Mono Nerd Font configuration
 
 Herdr is the default multiplexer: Home Manager installs it from the pinned nixpkgs, and interactive zsh starts or reattaches to the persistent session in plain terminals (not inside tmux, Herdr, or VS Code). Set `HERDR_AUTOSTART=0` to skip it for one terminal.
 
@@ -111,13 +111,14 @@ Use the native package manager for the desktop stack. The managed configuration 
 
 - Foot or Alacritty
 - `ddcutil` and working DDC permissions for `kvm-toggle`
-- JetBrains Mono and Caskaydia Mono Nerd Fonts for the configured terminals
 
-Home Manager intentionally does not enable or replace current user systemd units or system desktop configuration. Bootstrap retains timestamped backups of colliding managed files.
+The laptop profile installs JetBrains Mono Nerd Font, makes it the per-user Fontconfig default for monospace, sans-serif, and serif families, and selects it explicitly in Foot and Alacritty. Home Manager intentionally does not enable or replace current user systemd units or system desktop configuration. Bootstrap retains timestamped backups of colliding managed files.
 
 ### WSL prerequisites
 
 Use an Arch-based WSL distribution with `git` and `curl`. The profile installs no desktop stack and no user services. When `wslview` is already available, it becomes `BROWSER`; otherwise no browser integration is forced.
+
+The WSL profile does not manage the terminal font because Windows Terminal renders text on the Windows host. Install JetBrains Mono Nerd Font on Windows and select `JetBrainsMono Nerd Font` as the Windows Terminal profile's font face; installing it inside WSL would affect only Linux GUI applications such as WSLg clients.
 
 If activation stops during `checkLinkTargets`, no managed links have been changed yet; correct the reported ownership conflict and rerun `./bootstrap work-wsl`. A completed Nix installation is reused automatically.
 
@@ -130,9 +131,9 @@ Create the normal user, install `git` and `curl`, clone to `~/dotfiles`, and run
 Apply a profile directly:
 
 ```bash
-home-manager switch --flake ~/dotfiles#laptop
-home-manager switch --flake ~/dotfiles#work-wsl
-home-manager switch --flake ~/dotfiles#server
+home-manager switch --flake "$HOME/dotfiles#laptop"
+home-manager switch --flake "$HOME/dotfiles#work-wsl"
+home-manager switch --flake "$HOME/dotfiles#server"
 ```
 
 Update Home Manager and Nix packages:
@@ -140,7 +141,7 @@ Update Home Manager and Nix packages:
 ```bash
 cd ~/dotfiles
 nix flake update
-home-manager switch --flake .#laptop  # choose this machine's profile
+home-manager switch --flake ".#laptop"  # choose this machine's profile
 ```
 
 Update global mise-managed tools:
