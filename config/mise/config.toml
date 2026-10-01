@@ -8,3 +8,4 @@ gemini = { version = "latest", allow_builds = ["@github/keytar", "node-pty"] }
 opencode = "latest"
 "github:can1357/oh-my-pi" = "latest"
 uv = "latest"
+node = "lts"
