@@ -2,11 +2,11 @@
 
 Portable terminal and development configuration for three standalone Home Manager profiles:
 
-- `laptop`: common terminal environment plus Omarchy/Hyprland desktop overrides
+- `laptop`: common terminal environment plus desktop terminal and utility configuration
 - `work-wsl`: common terminal environment plus small WSL environment adjustments
 - `server`: common terminal environment with no desktop dependencies
 
-The repository must be cloned at `~/dotfiles`. See [INVENTORY.md](INVENTORY.md) for the inspected source, ownership decision, and migration action for the current Omarchy machine.
+The repository must be cloned at `~/dotfiles`. See [INVENTORY.md](INVENTORY.md) for the inspected source, ownership decisions, and migration actions.
 
 Profile usernames are declared beside the targets in `flake.nix`. They currently use `adams`; change the relevant target there before onboarding a machine with a different account name.
 
@@ -14,9 +14,9 @@ Profile usernames are declared beside the targets in `flake.nix`. They currently
 
 ### Native OS package manager
 
-The OS owns the machine: Hyprland, the Omarchy shell/Quickshell, Wayland portals, PipeWire, display/login tools, drivers, Bluetooth, Docker and other system services, GUI applications, and desktop fonts. This repository does not turn Arch, WSL, or a VPS into NixOS.
+The OS owns the machine: Hyprland, the desktop shell, Wayland portals, PipeWire, display/login tools, drivers, Bluetooth, Docker and other system services, GUI applications, and desktop fonts. This repository does not turn Arch, WSL, or a VPS into NixOS.
 
-The laptop profile configures user-facing parts of an existing Omarchy installation. It does not install or reproduce Omarchy. In particular, `config/hypr/hyprland.lua` deliberately loads the OS-provided Omarchy defaults and then applies the small overrides in this repository.
+The laptop profile manages only standalone user configuration. System desktop configuration remains native-OS-owned.
 
 ### Home Manager
 
@@ -24,7 +24,7 @@ Home Manager owns stable portable CLI programs and user configuration:
 
 - zsh (login shell, set by bootstrap) and Bash, Git, Neovim, tmux, Herdr configuration, btop, lazygit, fzf, ripgrep, fd, jq, zoxide, starship, mise, bat, eza, and GitHub CLI
 - editable files under `config/`, including portable GitHub CLI and OpenCode preferences
-- desktop-only terminal, Compose, Hyprland, Omarchy shell, and `kvm-toggle` configuration
+- desktop-only terminal, Compose, and `kvm-toggle` configuration
 
 Herdr is the default multiplexer: Home Manager installs it from the pinned nixpkgs, and interactive zsh starts or reattaches to the persistent session in plain terminals (not inside tmux, Herdr, or VS Code). Set `HERDR_AUTOSTART=0` to skip it for one terminal.
 
@@ -66,7 +66,7 @@ cd ~/dotfiles
 Profile detection chooses:
 
 1. `work-wsl` when the kernel identifies WSL
-2. `laptop` when Omarchy is installed or the current session is Hyprland
+2. `laptop` when the current session is Hyprland
 3. `server` otherwise
 
 Select explicitly when detection is not what you want:
@@ -83,6 +83,16 @@ The bootstrap installs only Nix when it is missing, runs the repository-pinned s
 ./bootstrap laptop --check
 ```
 
+### Home Manager checks
+
+Evaluate and build every profile without activating one:
+
+```bash
+nix flake check
+```
+
+The `laptop`, `work-wsl`, and `server` checks build their respective Home Manager activation packages.
+
 ### Container smoke test
 
 With a working Docker daemon, exercise the fresh-user `work-wsl` bootstrap in an Arch container:
@@ -97,14 +107,13 @@ A container does not emulate the WSL kernel, Windows interop, systemd, or `wslvi
 
 ### Laptop prerequisites
 
-Use pacman/Omarchy for the desktop stack. The migrated overrides specifically expect:
+Use the native package manager for the desktop stack. The managed configuration expects:
 
-- Omarchy and Hyprland for the Lua default layer
-- Foot or Alacritty and their Omarchy theme state
+- Foot or Alacritty
 - `ddcutil` and working DDC permissions for `kvm-toggle`
 - JetBrains Mono and Caskaydia Mono Nerd Fonts for the configured terminals
 
-Home Manager intentionally does not enable or replace current user systemd units. Existing Omarchy configuration remains untouched until bootstrap or `home-manager switch` is explicitly run from `~/dotfiles`; bootstrap retains timestamped backups of colliding files.
+Home Manager intentionally does not enable or replace current user systemd units or system desktop configuration. Bootstrap retains timestamped backups of colliding managed files.
 
 ### WSL prerequisites
 
@@ -199,4 +208,4 @@ Create or edit that project's `mise.toml` and commit it with the project. This d
 
 ## Migration safety
 
-The initial migration copied selected source into this repository; it did not delete, replace, or refresh anything under the current home directory. The old Waybar directory is an Omarchy upgrade backup, not active configuration, so it was not migrated. Likewise, packaged Omarchy samples, generated wrappers in `~/.local/bin`, old Hyprland `.conf` files, inactive Ghostty/Kitty variants, package-provided systemd units, OpenCode package/lock files, qalc application state, hardware-specific `hyprmoncfg`, GnuPG state, and credential-bearing GitHub `hosts.yml` remain outside this repository.
+The initial migration copied selected source into this repository; it did not delete, replace, or refresh anything under the current home directory. Generated wrappers in `~/.local/bin`, inactive terminal variants, package-provided systemd units, OpenCode package/lock files, qalc application state, hardware-specific `hyprmoncfg`, GnuPG state, and credential-bearing GitHub `hosts.yml` remain outside this repository.

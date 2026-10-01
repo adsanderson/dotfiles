@@ -1,4 +1,4 @@
-include "/usr/share/omarchy/default/xcompose"
+include "%L"
 
 # Identification
 <Multi_key> <space> <n> : "Adam Sanderson"

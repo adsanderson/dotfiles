@@ -5,8 +5,8 @@ usage() {
   cat <<'EOF'
 Usage: ./bootstrap [laptop|work-wsl|server] [--check]
 
-With no profile, WSL is detected from /proc; an Omarchy/Hyprland session selects
-laptop; everything else selects server. --check validates without installing or
+With no profile, WSL is detected from /proc; a Hyprland session selects laptop;
+everything else selects server. --check validates without installing or
 applying anything.
 EOF
 }
@@ -25,7 +25,7 @@ done
 if [[ -z $profile ]]; then
   if grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null; then
     profile=work-wsl
-  elif [[ -n ${HYPRLAND_INSTANCE_SIGNATURE:-} ]] || [[ -x /usr/share/omarchy/bin/omarchy ]]; then
+  elif [[ -n ${HYPRLAND_INSTANCE_SIGNATURE:-} ]]; then
     profile=laptop
   else
     profile=server

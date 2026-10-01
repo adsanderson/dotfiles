@@ -21,12 +21,18 @@
         extraSpecialArgs = { inherit username; };
         inherit modules;
       };
-    in {
-      packages.${system}.home-manager = home-manager.packages.${system}.default;
       homeConfigurations = {
         laptop = mkHome "adams" [ ./home/common.nix ./home/desktop.nix ];
         work-wsl = mkHome "adams" [ ./home/common.nix ./home/wsl.nix ];
         server = mkHome "adams" [ ./home/common.nix ./home/server.nix ];
+      };
+    in {
+      packages.${system}.home-manager = home-manager.packages.${system}.default;
+      inherit homeConfigurations;
+      checks.${system} = {
+        laptop = homeConfigurations.laptop.activationPackage;
+        work-wsl = homeConfigurations.work-wsl.activationPackage;
+        server = homeConfigurations.server.activationPackage;
       };
     };
 }
