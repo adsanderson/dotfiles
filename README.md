@@ -22,11 +22,13 @@ The laptop profile manages standalone user configuration, including its user-lev
 
 Home Manager owns stable portable CLI programs and user configuration:
 
-- zsh (login shell, set by bootstrap) and Bash, Git, Neovim, tmux, Herdr configuration, btop, lazygit, fzf, ripgrep, fd, jq, zoxide, starship, mise, bat, eza, and GitHub CLI
+- zsh (login shell, set by bootstrap) and Bash, Git, OpenSSH, Neovim, tmux, Herdr configuration, btop, lazygit, fzf, ripgrep, fd, jq, zoxide, starship, mise, bat, eza, and GitHub CLI
 - editable files under `config/`, including portable GitHub CLI and OpenCode preferences
 - desktop-only terminal, Compose, `kvm-toggle`, and JetBrains Mono Nerd Font configuration
 
 Herdr is the default multiplexer: Home Manager installs it from the pinned nixpkgs, and interactive zsh starts or reattaches to the persistent session in plain terminals (not inside tmux, Herdr, or VS Code). Set `HERDR_AUTOSTART=0` to skip it for one terminal.
+
+The common profile manages an SSH client configuration for GitHub. The laptop profile exposes Arch's package-provided SSH agent socket; private keys, agent enablement, `known_hosts`, and GitHub credentials remain machine-local.
 
 Most terminal behavior is in `home/common.nix`. `home/desktop.nix`, `home/wsl.nix`, and `home/server.nix` contain explicit profile differences.
 
@@ -82,6 +84,26 @@ The bootstrap installs only Nix when it is missing, runs the repository-pinned s
 ```bash
 ./bootstrap laptop --check
 ```
+
+### SSH and GitHub
+
+Home Manager installs OpenSSH on every profile and configures `github.com` to use the `git` user, the conventional `~/.ssh/id_ed25519` key, and an available SSH agent. The laptop profile points `SSH_AUTH_SOCK` at Arch's package-provided user socket. Enable that socket once on a laptop:
+
+```bash
+systemctl --user enable --now ssh-agent.socket
+```
+
+Create a unique, passphrase-protected key on each machine; never copy a private key into this repository:
+
+```bash
+install -d -m 700 ~/.ssh
+ssh-keygen -t ed25519 -a 100 -f ~/.ssh/id_ed25519 -C "$USER@$(hostname)"
+ssh-add ~/.ssh/id_ed25519
+gh auth login --git-protocol ssh --web
+ssh -T git@github.com
+```
+
+Open a new login shell after the first laptop activation so `SSH_AUTH_SOCK` is present. WSL and server profiles deliberately do not start a user service; use their existing agent or agent forwarding. GitHub CLI stores authentication in the excluded `~/.config/gh/hosts.yml`.
 
 ### Home Manager checks
 

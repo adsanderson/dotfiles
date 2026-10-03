@@ -13,6 +13,7 @@
     lazygit
     mise
     neovim
+    openssh
     ripgrep
     starship
     tmux

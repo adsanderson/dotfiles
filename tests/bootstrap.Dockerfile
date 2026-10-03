@@ -29,6 +29,9 @@ RUN test -L "$HOME/.gitconfig" \
     && test -L "$HOME/.config/btop" \
     && test -L "$HOME/.config/gh/config.yml" \
     && test -L "$HOME/.config/opencode/opencode.json" \
+    && test -L "$HOME/.ssh/config" \
+    && ssh -G github.com | grep -qx 'user git' \
+    && ssh -G github.com | grep -qx 'identityfile ~/.ssh/id_ed25519' \
     && mapfile -t backups < <(compgen -G "$HOME/.gitconfig.hm-backup-*") \
     && test "$(readlink -e "$HOME/.inputrc")" = "$HOME/dotfiles/config/shell/inputrc" \
     && grep -qx 'legacy inputrc' "$HOME/legacy-inputrc" \

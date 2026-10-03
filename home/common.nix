@@ -19,6 +19,16 @@ in {
     };
   };
   programs.home-manager.enable = true;
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    settings."github.com" = {
+      HostName = "github.com";
+      User = "git";
+      IdentityFile = "~/.ssh/id_ed25519";
+      AddKeysToAgent = "yes";
+    };
+  };
   programs.bash = {
     enable = true;
     historyControl = [ "ignoreboth" ];

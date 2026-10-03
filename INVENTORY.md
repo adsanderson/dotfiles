@@ -15,10 +15,11 @@ This is an intentional-tool inventory, not a package dump.
 | Git identity and defaults | `config/git/config` | Home Manager common | Yes | Keep the consolidated editable config and global ignore. The default branch is `main`. |
 | lazygit | No authored configuration | Home Manager common | Yes | Install the tool only. Add configuration only for an actual override. |
 | Starship | `config/starship/starship.toml` | Home Manager common | Yes | Preserve as an out-of-store symlink. |
-| Core CLI (`bat`, `btop`, `eza`, `fd`, `fzf`, `git`, `jq`, `lazygit`, `neovim`, `ripgrep`, `starship`, `tmux`, `zoxide`) | `home/packages.nix` | Home Manager common | Yes | Install through Home Manager on all profiles. |
+| Core CLI (`bat`, `btop`, `eza`, `fd`, `fzf`, `git`, `jq`, `lazygit`, `neovim`, `openssh`, `ripgrep`, `starship`, `tmux`, `zoxide`) | `home/packages.nix` | Home Manager common | Yes | Install through Home Manager on all profiles. |
 | mise binary | `home/packages.nix` | Home Manager common | Yes | Retain mise as the runtime/tool manager. |
 | AI/dev CLIs (`claude`, `codex`, `gemini`, `oh-my-pi`) | `config/mise/config.toml` | mise global | Yes | Keep fast-moving CLIs at `latest`; preserve only authored configuration. |
-| GitHub CLI | `home/packages.nix`; `config/gh/config.yml` | Home Manager common | Yes | Preserve portable preferences and aliases. Never migrate credential-bearing `hosts.yml`. |
+| GitHub CLI | `home/packages.nix`; `config/gh/config.yml` | Home Manager common | Yes | Preserve portable preferences, SSH Git protocol, and aliases. Never migrate credential-bearing `hosts.yml`. |
+| SSH client and agent integration | `home/common.nix`; `home/desktop.nix` | Home Manager common + desktop environment | Mostly | Manage portable GitHub host settings everywhere and expose the package-provided agent socket on laptops. Keep private keys, `known_hosts`, socket enablement, and forwarded agents machine-local. |
 | Go, Node, pnpm, Python | Repository `mise.toml` files | Each repository | Yes | Do not add language runtimes to Home Manager or global mise. |
 | uv | `config/mise/config.toml` | mise global | Yes | Keep globally as a project/tool manager; projects still declare their Python version and tools. |
 | Personal scripts | `bin` | Profile-specific | Mixed | Manage only authored scripts; do not copy generated wrappers. |
@@ -27,7 +28,7 @@ This is an intentional-tool inventory, not a package dump.
 | Laptop user font defaults | `home/desktop.nix` | Home Manager desktop | Yes | Install JetBrains Mono Nerd Font and use it for the per-user Fontconfig monospace, sans-serif, and serif defaults. |
 | Compose sequences | `config/xcompose/XCompose` | Home Manager desktop | Yes | Extend the standard locale definitions with personal identification shortcuts. |
 | KVM monitor switching | `bin/kvm-toggle` | Home Manager desktop | No | Preserve the utility; `ddcutil` remains OS-owned because it needs hardware and system permissions. |
-| User systemd units | Package-provided units | Native OS | No | Do not recreate them in Home Manager. WSL/server profiles enable none. |
+| User systemd units | Package-provided units | Native OS | No | Do not recreate them in Home Manager. The laptop uses the package-provided SSH agent socket; WSL/server profiles enable none. |
 | PipeWire, portals, Bluetooth, Hyprland, display stack, system-wide fonts, GUI apps, Docker services | Native packages/services | Native OS | No | Leave to native OS package management. |
 | WSL environment | `home/wsl.nix` | Home Manager WSL | Profile-specific | Add only safe WSL defaults (`BROWSER=wslview` when available); Windows owns the terminal font, and the profile enables no desktop or user services. |
 | Headless environment | `home/server.nix` | Home Manager server | Profile-specific | Reuse the common terminal environment with no desktop dependencies. |

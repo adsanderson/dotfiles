@@ -3,6 +3,9 @@ let
   dotfilesRoot = "${config.home.homeDirectory}/dotfiles";
   outOfStore = path: config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/${path}";
 in {
+  # Use Arch's package-provided ssh-agent socket; enabling it remains machine-local.
+  home.sessionVariables.SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/ssh-agent.socket";
+
   home.file.".local/bin/kvm-toggle".source = outOfStore "bin/kvm-toggle";
   home.file.".XCompose".source = outOfStore "config/xcompose/XCompose";
 
