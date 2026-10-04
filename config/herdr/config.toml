@@ -7,7 +7,25 @@ name = "terminal"
 auto_switch = false
 
 [theme.custom]
-panel_bg = "black"
+accent = "#7aa2f7"
+panel_bg = "reset"
+sidebar_bg = "reset"
+active_row_bg = "#171c32"
+selection_bg = "#1d233d"
+surface0 = "#171c32"
+surface1 = "#1d233d"
+surface_dim = "#000000"
+overlay0 = "#5d6682"
+overlay1 = "#9aa5ce"
+text = "#c0caf5"
+subtext0 = "#9aa5ce"
+mauve = "#bb9af7"
+green = "#9ece6a"
+yellow = "#e0af68"
+red = "#f7768e"
+blue = "#7aa2f7"
+teal = "#7dcfff"
+peach = "#f79f76"
 
 [terminal]
 new_cwd = "follow"

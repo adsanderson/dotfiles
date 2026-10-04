@@ -2,7 +2,7 @@
 
 Portable terminal and development configuration for three standalone Home Manager profiles:
 
-- `laptop`: common terminal environment plus desktop terminal and utility configuration
+- `laptop`: common terminal environment plus desktop utilities and CachyOS-specific Niri/Noctalia configuration
 - `work-wsl`: common terminal environment plus small WSL environment adjustments
 - `server`: common terminal environment with no desktop dependencies
 
@@ -14,9 +14,9 @@ Profile usernames are declared beside the targets in `flake.nix`. They currently
 
 ### Native OS package manager
 
-The OS owns the machine: Hyprland, the desktop shell, Wayland portals, PipeWire, display/login tools, drivers, Bluetooth, Docker and other system services, GUI applications, and system-wide fonts. This repository does not turn Arch, WSL, or a VPS into NixOS.
+The OS owns the machine: the Niri and Noctalia packages, Wayland portals, PipeWire, display/login tools, drivers, Bluetooth, Docker and other system services, GUI applications, and system-wide fonts. This repository does not turn Arch, WSL, or a VPS into NixOS.
 
-The laptop profile manages standalone user configuration, including its user-level font default. System desktop configuration remains native-OS-owned.
+The laptop profile manages standalone user configuration and its user-level font default. Its `home/cachyos.nix` layer owns the editable Niri and Noctalia configuration while their packages and system integration remain native-OS-owned.
 
 ### Home Manager
 
@@ -25,12 +25,13 @@ Home Manager owns stable portable CLI programs and user configuration:
 - zsh (login shell, set by bootstrap) and Bash, Git, OpenSSH, Neovim, tmux, Herdr configuration, btop, lazygit, fzf, ripgrep, fd, jq, zoxide, starship, mise, bat, eza, and GitHub CLI
 - editable files under `config/`, including portable GitHub CLI and OpenCode preferences
 - desktop-only terminal, Compose, `kvm-toggle`, and JetBrains Mono Nerd Font configuration
+- CachyOS-specific editable Niri and Noctalia configuration
 
 Herdr is the default multiplexer: Home Manager installs it from the pinned nixpkgs, and interactive zsh starts or reattaches to the persistent session in plain terminals (not inside tmux, Herdr, or VS Code). Set `HERDR_AUTOSTART=0` to skip it for one terminal.
 
 The common profile manages an SSH client configuration for GitHub. The laptop profile exposes Arch's package-provided SSH agent socket; private keys, agent enablement, `known_hosts`, and GitHub credentials remain machine-local.
 
-Most terminal behavior is in `home/common.nix`. `home/desktop.nix`, `home/wsl.nix`, and `home/server.nix` contain explicit profile differences.
+Most terminal behavior is in `home/common.nix`. `home/desktop.nix`, `home/wsl.nix`, and `home/server.nix` contain explicit profile differences; `home/cachyos.nix` adds native-desktop configuration to the laptop profile.
 
 ### mise
 
@@ -127,14 +128,17 @@ The build installs Nix through `bootstrap`, activates Home Manager twice, verifi
 
 A container does not emulate the WSL kernel, Windows interop, systemd, or `wslview`. It validates the Arch userspace, Nix installation, Home Manager activation, and collision handling; the real WSL instance still needs a final smoke run.
 
-### Laptop prerequisites
+### CachyOS laptop prerequisites
 
 Use the native package manager for the desktop stack. The managed configuration expects:
 
+- Niri and Noctalia
 - Foot or Alacritty
+- Firefox and Nautilus for the configured launch bindings
+- the `capitaine-cursors` cursor theme
 - `ddcutil` and working DDC permissions for `kvm-toggle`
 
-The laptop profile installs JetBrains Mono Nerd Font, makes it the per-user Fontconfig default for monospace, sans-serif, and serif families, and selects it explicitly in Foot and Alacritty. Home Manager intentionally does not enable or replace current user systemd units or system desktop configuration. Bootstrap retains timestamped backups of colliding managed files.
+The laptop profile installs JetBrains Mono Nerd Font, makes it the per-user Fontconfig default for monospace, sans-serif, and serif families, and selects it explicitly in Foot and Alacritty. Its CachyOS layer links `~/.config/niri` and `~/.config/noctalia` to the editable repository sources. Home Manager intentionally does not install the compositor or shell, enable or replace current user systemd units, or manage system desktop infrastructure. Bootstrap retains timestamped backups of colliding managed files.
 
 ### WSL prerequisites
 
@@ -231,4 +235,4 @@ Create or edit that project's `mise.toml` and commit it with the project. This d
 
 ## Migration safety
 
-The initial migration copied selected source into this repository; it did not delete, replace, or refresh anything under the current home directory. Generated wrappers in `~/.local/bin`, inactive terminal variants, package-provided systemd units, OpenCode package/lock files, qalc application state, hardware-specific `hyprmoncfg`, GnuPG state, and credential-bearing GitHub `hosts.yml` remain outside this repository.
+Configuration sources are copied into this repository before Home Manager takes ownership. On first activation, Home Manager preserves colliding regular files and directories as timestamped `hm-backup-*` paths rather than deleting them. Generated wrappers in `~/.local/bin`, inactive terminal variants, package-provided systemd units, OpenCode package/lock files, qalc application state, hardware-specific `hyprmoncfg`, GnuPG state, and credential-bearing GitHub `hosts.yml` remain outside this repository.

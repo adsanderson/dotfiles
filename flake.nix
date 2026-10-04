@@ -22,7 +22,7 @@
         inherit modules;
       };
       homeConfigurations = {
-        laptop = mkHome "adams" [ ./home/common.nix ./home/desktop.nix ];
+        laptop = mkHome "adams" [ ./home/common.nix ./home/desktop.nix ./home/cachyos.nix ];
         work-wsl = mkHome "adams" [ ./home/common.nix ./home/wsl.nix ];
         server = mkHome "adams" [ ./home/common.nix ./home/server.nix ];
       };

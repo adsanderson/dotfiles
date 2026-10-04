@@ -23,19 +23,21 @@ This is an intentional-tool inventory, not a package dump.
 | Go, Node, pnpm, Python | Repository `mise.toml` files | Each repository | Yes | Do not add language runtimes to Home Manager or global mise. |
 | uv | `config/mise/config.toml` | mise global | Yes | Keep globally as a project/tool manager; projects still declare their Python version and tools. |
 | Personal scripts | `bin` | Profile-specific | Mixed | Manage only authored scripts; do not copy generated wrappers. |
-| Hyprland and desktop shell | Native system configuration | Native OS | No | Do not manage distribution-provided desktop configuration in this repository. |
+| Niri and Noctalia packages/system integration | Native system configuration | Native OS | No | Install and integrate the compositor and shell through CachyOS; Home Manager owns only the authored user configuration. |
 | Terminal settings | `config/foot`; `config/alacritty` | Home Manager desktop | Mostly | Use JetBrains Mono Nerd Font in both terminals; preserve standalone key encodings, padding, and OSC 52 behavior. |
+| Niri compositor configuration | `config/niri` | Home Manager CachyOS layer | No | Preserve the current includes, input/display/layout behavior, key bindings, Noctalia startup/integration, window rules, and CachyOS Niri blur settings as an out-of-store symlink. |
+| Noctalia shell configuration | `config/noctalia` | Home Manager CachyOS layer | No | Preserve authored shell and lock-screen preferences as an out-of-store symlink. |
 | Laptop user font defaults | `home/desktop.nix` | Home Manager desktop | Yes | Install JetBrains Mono Nerd Font and use it for the per-user Fontconfig monospace, sans-serif, and serif defaults. |
 | Compose sequences | `config/xcompose/XCompose` | Home Manager desktop | Yes | Extend the standard locale definitions with personal identification shortcuts. |
 | KVM monitor switching | `bin/kvm-toggle` | Home Manager desktop | No | Preserve the utility; `ddcutil` remains OS-owned because it needs hardware and system permissions. |
 | User systemd units | Package-provided units | Native OS | No | Do not recreate them in Home Manager. The laptop uses the package-provided SSH agent socket; WSL/server profiles enable none. |
-| PipeWire, portals, Bluetooth, Hyprland, display stack, system-wide fonts, GUI apps, Docker services | Native packages/services | Native OS | No | Leave to native OS package management. |
+| PipeWire, portals, Bluetooth, Niri and Noctalia packages, display stack, system-wide fonts, GUI apps, Docker services | Native packages/services | Native OS | No | Leave packages and system integration to native OS management. |
 | WSL environment | `home/wsl.nix` | Home Manager WSL | Profile-specific | Add only safe WSL defaults (`BROWSER=wslview` when available); Windows owns the terminal font, and the profile enables no desktop or user services. |
 | Headless environment | `home/server.nix` | Home Manager server | Profile-specific | Reuse the common terminal environment with no desktop dependencies. |
 
 ## Decisions
 
-- **Desktop portability:** system desktop, shell, and system-wide font configuration stays outside the repository; the laptop profile owns only standalone user configuration and its per-user JetBrains Mono Nerd Font default.
+- **Desktop portability:** desktop packages, services, and system-wide font configuration stay native-OS-owned. The CachyOS layer owns this laptop's Niri and Noctalia user configuration; the reusable desktop layer owns terminal, Compose, utility, and per-user font configuration.
 - **Terminal breadth:** Foot is the primary terminal and Alacritty is the authored fallback. Inactive terminal variants are not copied.
 - **mise scope:** AI CLIs, OpenCode, and uv stay global because they update rapidly. Go, Node, pnpm, and Python versions remain repository-owned.
 - **Excluded application state:** GitHub `hosts.yml` and GnuPG state are sensitive; generated package metadata, locks, backups, and application state are not migrated.
