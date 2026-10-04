@@ -22,12 +22,12 @@ The laptop profile manages standalone user configuration and its user-level font
 
 Home Manager owns stable portable CLI programs and user configuration:
 
-- zsh (login shell, set by bootstrap) and Bash, Git, OpenSSH, Neovim, tmux, Herdr configuration, btop, lazygit, fzf, ripgrep, fd, jq, zoxide, starship, mise, bat, eza, and GitHub CLI
-- editable files under `config/`, including portable GitHub CLI and OpenCode preferences
+- zsh (login shell, set by bootstrap) and Bash, Git, OpenSSH, Neovim, tmux, Herdr, btop, lazygit, fzf, ripgrep, fd, jq, zoxide, starship, mise, bat, eza, and GitHub CLI
+- editable files under `config/`, including portable Herdr, lazygit, GitHub CLI, and OpenCode preferences
 - desktop-only terminal, Compose, `kvm-toggle`, and JetBrains Mono Nerd Font configuration
 - CachyOS-specific editable Niri and Noctalia configuration
 
-Herdr is the default multiplexer: Home Manager installs it from the pinned nixpkgs, and interactive zsh starts or reattaches to the persistent session in plain terminals (not inside tmux, Herdr, or VS Code). Set `HERDR_AUTOSTART=0` to skip it for one terminal.
+Herdr is the default multiplexer: Home Manager installs it from the pinned nixpkgs and manages only its portable `config.toml`; logs, sessions, release notes, plugin locks, and generated color files remain machine-local. Interactive zsh starts or reattaches to the persistent session in plain terminals (not inside tmux, Herdr, or VS Code). Set `HERDR_AUTOSTART=0` to skip it for one terminal. Home Manager also applies the portable lazygit theme on every profile while leaving Noctalia's duplicate generated theme file machine-local.
 
 The common profile manages an SSH client configuration for GitHub. The laptop profile exposes Arch's package-provided SSH agent socket; private keys, agent enablement, `known_hosts`, and GitHub credentials remain machine-local.
 
@@ -135,10 +135,12 @@ Use the native package manager for the desktop stack. The managed configuration 
 - Niri and Noctalia
 - Foot or Alacritty
 - Firefox and Nautilus for the configured launch bindings
+- 1Password from the official `1password` AUR package
+- VLC from the signed CachyOS repository
 - the `capitaine-cursors` cursor theme
 - `ddcutil` and working DDC permissions for `kvm-toggle`
 
-The laptop profile installs JetBrains Mono Nerd Font, makes it the per-user Fontconfig default for monospace, sans-serif, and serif families, and selects it explicitly in Foot and Alacritty. Its CachyOS layer links `~/.config/niri` and `~/.config/noctalia` to the editable repository sources. Home Manager intentionally does not install the compositor or shell, enable or replace current user systemd units, or manage system desktop infrastructure. Bootstrap retains timestamped backups of colliding managed files.
+The laptop profile installs JetBrains Mono Nerd Font, makes it the per-user Fontconfig default for monospace, sans-serif, and serif families, and selects it explicitly in Foot and Alacritty. Its CachyOS layer links `~/.config/niri` and `~/.config/noctalia` to the editable repository sources. Home Manager intentionally does not install the compositor, shell, or GUI applications such as 1Password and VLC; enable or replace current user systemd units; or manage system desktop infrastructure. Bootstrap retains timestamped backups of colliding managed files.
 
 ### WSL prerequisites
 

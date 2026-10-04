@@ -87,6 +87,7 @@ in {
     "opencode/tui.json".source = outOfStore "config/opencode/tui.json";
     "herdr/config.toml".source = outOfStore "config/herdr/config.toml";
     "git/ignore".source = outOfStore "config/git/ignore";
+    "lazygit/config.yml".source = outOfStore "config/lazygit/config.yml";
     "mise/config.toml".source = outOfStore "config/mise/config.toml";
     "nvim".source = outOfStore "config/nvim";
     "starship.toml".source = outOfStore "config/starship/starship.toml";

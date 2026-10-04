@@ -11,9 +11,9 @@ This is an intentional-tool inventory, not a package dump.
 | zsh startup | `config/shell/zshrc` | Home Manager common + bootstrap `chsh` | Yes | zsh is the login shell. Shared functions load under sticky ksh emulation so their bash-style arrays keep working. |
 | Neovim / LazyVim | `config/nvim` | Home Manager common | Yes | Preserve as an out-of-store symlink. Keep personal theme, remote clipboard, disabled animated scrolling, and selected LazyVim extras. |
 | tmux | `config/tmux/tmux.conf` | Home Manager common | Yes | Preserve as an out-of-store symlink, including pane/window controls and OSC 52 forwarding. |
-| Herdr | `config/herdr/config.toml` | Home Manager common | Yes | Install from pinned nixpkgs and preserve workspace, tab, pane, key, theme, and UI behavior. |
+| Herdr | `config/herdr/config.toml` | Home Manager common | Yes | Install from pinned nixpkgs and preserve workspace, tab, pane, key, theme, and UI behavior. Keep logs, sessions, plugin locks, release notes, and generated color files machine-local. |
 | Git identity and defaults | `config/git/config` | Home Manager common | Yes | Keep the consolidated editable config and global ignore. The default branch is `main`. |
-| lazygit | No authored configuration | Home Manager common | Yes | Install the tool only. Add configuration only for an actual override. |
+| lazygit | `config/lazygit/config.yml` | Home Manager common | Yes | Preserve the current portable theme override as an out-of-store symlink on every profile; exclude Noctalia's duplicate generated theme file. |
 | Starship | `config/starship/starship.toml` | Home Manager common | Yes | Preserve as an out-of-store symlink. |
 | Core CLI (`bat`, `btop`, `eza`, `fd`, `fzf`, `git`, `jq`, `lazygit`, `neovim`, `openssh`, `ripgrep`, `starship`, `tmux`, `zoxide`) | `home/packages.nix` | Home Manager common | Yes | Install through Home Manager on all profiles. |
 | mise binary | `home/packages.nix` | Home Manager common | Yes | Retain mise as the runtime/tool manager. |
@@ -27,6 +27,8 @@ This is an intentional-tool inventory, not a package dump.
 | Terminal settings | `config/foot`; `config/alacritty` | Home Manager desktop | Mostly | Use JetBrains Mono Nerd Font in both terminals; preserve standalone key encodings, padding, and OSC 52 behavior. |
 | Niri compositor configuration | `config/niri` | Home Manager CachyOS layer | No | Preserve the current includes, input/display/layout behavior, key bindings, Noctalia startup/integration, window rules, and CachyOS Niri blur settings as an out-of-store symlink. |
 | Noctalia shell configuration | `config/noctalia` | Home Manager CachyOS layer | No | Preserve authored shell and lock-screen preferences as an out-of-store symlink. |
+| 1Password desktop app | Official `1password` AUR package | Native OS | No | Install on the CachyOS laptop with `paru`; keep the application, browser integration, credentials, and state outside Home Manager and this repository. |
+| VLC desktop app | Signed CachyOS `vlc` package | Native OS | No | Install on the CachyOS laptop with `pacman`; keep the application and its state outside Home Manager and this repository. |
 | Laptop user font defaults | `home/desktop.nix` | Home Manager desktop | Yes | Install JetBrains Mono Nerd Font and use it for the per-user Fontconfig monospace, sans-serif, and serif defaults. |
 | Compose sequences | `config/xcompose/XCompose` | Home Manager desktop | Yes | Extend the standard locale definitions with personal identification shortcuts. |
 | KVM monitor switching | `bin/kvm-toggle` | Home Manager desktop | No | Preserve the utility; `ddcutil` remains OS-owned because it needs hardware and system permissions. |
