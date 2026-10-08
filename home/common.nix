@@ -3,7 +3,7 @@ let
   dotfilesRoot = "${config.home.homeDirectory}/dotfiles";
   outOfStore = path: config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/${path}";
 in {
-  imports = [ ./packages.nix ];
+  imports = [ ./herdr.nix ./packages.nix ];
 
   home = {
     inherit username;

@@ -29,6 +29,10 @@ RUN test -L "$HOME/.gitconfig" \
     && test -L "$HOME/.config/btop" \
     && test -L "$HOME/.config/gh/config.yml" \
     && test -L "$HOME/.config/opencode/opencode.json" \
+    && test -L "$HOME/.config/herdr-auto-title/config.env" \
+    && "$HOME/.nix-profile/bin/herdr" plugin list --json \
+      | "$HOME/.nix-profile/bin/jq" -e \
+        '.result.plugins | any(.plugin_id == "herdr.auto-title" and .enabled)' >/dev/null \
     && test -L "$HOME/.ssh/config" \
     && ssh -G github.com | grep -qx 'user git' \
     && ssh -G github.com | grep -qx 'identityfile ~/.ssh/id_ed25519' \

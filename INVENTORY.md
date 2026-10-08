@@ -11,7 +11,7 @@ This is an intentional-tool inventory, not a package dump.
 | zsh startup | `config/shell/zshrc` | Home Manager common + bootstrap `chsh` | Yes | zsh is the login shell. Shared functions load under sticky ksh emulation so their bash-style arrays keep working. |
 | Neovim / LazyVim | `config/nvim` | Home Manager common | Yes | Preserve as an out-of-store symlink. Keep personal theme, remote clipboard, disabled animated scrolling, and selected LazyVim extras. |
 | tmux | `config/tmux/tmux.conf` | Home Manager common | Yes | Preserve as an out-of-store symlink, including pane/window controls and OSC 52 forwarding. |
-| Herdr | `config/herdr/config.toml` | Home Manager common | Yes | Install from pinned nixpkgs and preserve workspace, tab, pane, key, theme, and UI behavior. Keep logs, sessions, plugin locks, release notes, and generated color files machine-local. |
+| Herdr and Auto Title | `home/herdr.nix`; `config/herdr/config.toml`; `config/herdr-auto-title/config.env` | Home Manager common | Yes | Install Herdr from pinned nixpkgs, build and link pinned Auto Title, and preserve portable workspace, tab, pane, key, theme, UI, and title behavior. Keep logs, sessions, plugin registry/manual-name state, release notes, and generated color files machine-local. |
 | Git identity and defaults | `config/git/config` | Home Manager common | Yes | Keep the consolidated editable config and global ignore. The default branch is `main`. |
 | lazygit | `config/lazygit/config.yml` | Home Manager common | Yes | Preserve the current portable theme override as an out-of-store symlink on every profile; exclude Noctalia's duplicate generated theme file. |
 | Starship | `config/starship/starship.toml` | Home Manager common | Yes | Preserve as an out-of-store symlink. |
@@ -29,6 +29,8 @@ This is an intentional-tool inventory, not a package dump.
 | Noctalia shell configuration | `config/noctalia` | Home Manager CachyOS layer | No | Preserve authored shell and lock-screen preferences as an out-of-store symlink. |
 | 1Password desktop app | Official `1password` AUR package | Native OS | No | Install on the CachyOS laptop with `paru`; keep the application, browser integration, credentials, and state outside Home Manager and this repository. |
 | VLC desktop app | Signed CachyOS `vlc` package | Native OS | No | Install on the CachyOS laptop with `pacman`; keep the application and its state outside Home Manager and this repository. |
+| Obsidian desktop app | Signed Arch `obsidian` package | Native OS | No | Install on the CachyOS laptop with `pacman`; keep the application, vaults, credentials, plugins, and state outside Home Manager and this repository. |
+| WhatsApp web-app launcher | `home/desktop.nix` | Home Manager desktop + native Chromium | Mostly | Generate the application entry and pin the official web-app icon through Home Manager; install Chromium through CachyOS and keep its profile, login, and application state machine-local. |
 | Laptop user font defaults | `home/desktop.nix` | Home Manager desktop | Yes | Install JetBrains Mono Nerd Font and use it for the per-user Fontconfig monospace, sans-serif, and serif defaults. |
 | Compose sequences | `config/xcompose/XCompose` | Home Manager desktop | Yes | Extend the standard locale definitions with personal identification shortcuts. |
 | KVM monitor switching | `bin/kvm-toggle` | Home Manager desktop | No | Preserve the utility; `ddcutil` remains OS-owned because it needs hardware and system permissions. |
