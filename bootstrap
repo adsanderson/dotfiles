@@ -87,11 +87,24 @@ if [[ $(basename -- "$login_shell") != zsh ]]; then
     done < /etc/shells
   fi
 
-  if [[ -n $zsh_path && -t 0 ]]; then
-    printf 'Changing login shell from %s to %s...\n' "$login_shell" "$zsh_path"
-    chsh -s "$zsh_path" || printf 'chsh failed; run it manually: chsh -s %s\n' "$zsh_path"
-  elif [[ -n $zsh_path ]]; then
-    printf 'Login shell is %s; run: chsh -s %s\n' "$login_shell" "$zsh_path"
+  if [[ -n $zsh_path ]]; then
+    shell_change=(chsh -s "$zsh_path")
+    if [[ $profile == work-wsl ]]; then
+      shell_change=(sudo chsh -s "$zsh_path" "$USER")
+    fi
+
+    if [[ -t 0 ]]; then
+      printf 'Changing login shell from %s to %s...\n' "$login_shell" "$zsh_path"
+      if ! "${shell_change[@]}"; then
+        printf 'Shell change failed; run it manually:'
+        printf ' %q' "${shell_change[@]}"
+        printf '\n'
+      fi
+    else
+      printf 'Login shell is %s; run:' "$login_shell"
+      printf ' %q' "${shell_change[@]}"
+      printf '\n'
+    fi
   else
     native_zsh=""
     for candidate in /usr/bin/zsh /bin/zsh /usr/local/bin/zsh; do
