@@ -29,6 +29,8 @@ Home Manager owns stable portable CLI programs and user configuration:
 
 Herdr is the default multiplexer: Home Manager installs it from the pinned nixpkgs, builds the pinned Auto Title plugin, links that plugin into Herdr, and manages their portable configuration. Auto Title names tabs and panes from their directory, Git branch, foreground process, SSH host, or agent task; agent tasks take precedence in split layouts, while manual names remain authoritative. Logs, sessions, plugin registry state, manual-name state, release notes, and generated color files remain machine-local. Interactive zsh starts or reattaches to the persistent Herdr session in plain terminals (not inside tmux, Herdr, or VS Code). Set `HERDR_AUTOSTART=0` to skip it for one terminal. Home Manager also applies the portable lazygit theme on every profile while leaving Noctalia's duplicate generated theme file machine-local.
 
+Portable terminal tools use semantic ANSI colors and the terminal's default foreground and background instead of a shared RGB palette. The terminal profile therefore owns the actual shades: Alacritty or Foot on the laptop, Windows Terminal for WSL, and the connecting terminal for a server. Neovim, Herdr, tmux, Starship, lazygit, bat, and OpenCode follow that host palette; btop uses its 16-color TTY mode.
+
 The common profile manages an SSH client configuration for GitHub. The laptop profile exposes Arch's package-provided SSH agent socket; private keys, agent enablement, `known_hosts`, and GitHub credentials remain machine-local.
 
 Most terminal behavior is in `home/common.nix`. `home/desktop.nix`, `home/wsl.nix`, and `home/server.nix` contain explicit profile differences; `home/cachyos.nix` adds native-desktop configuration to the laptop profile.
@@ -148,7 +150,7 @@ The laptop profile installs JetBrains Mono Nerd Font, makes it the per-user Font
 
 Use an Arch-based WSL distribution with `git` and `curl`. The profile installs no desktop stack and no user services. When `wslview` is already available, it becomes `BROWSER`; otherwise no browser integration is forced.
 
-The WSL profile does not manage the terminal font because Windows Terminal renders text on the Windows host. Install JetBrains Mono Nerd Font on Windows and select `JetBrainsMono Nerd Font` as the Windows Terminal profile's font face; installing it inside WSL would affect only Linux GUI applications such as WSLg clients.
+The WSL profile does not manage the terminal font or color palette because Windows Terminal renders both on the Windows host. Install JetBrains Mono Nerd Font on Windows, select `JetBrainsMono Nerd Font` as the Windows Terminal profile's font face, and choose any terminal color scheme whose ANSI slots retain their conventional meanings. Shared terminal tools consume those ANSI colors automatically; installing a font or terminal theme inside WSL would affect only Linux GUI applications such as WSLg clients.
 
 If activation stops during `checkLinkTargets`, no managed links have been changed yet; correct the reported ownership conflict and rerun `./bootstrap work-wsl`. A completed Nix installation is reused automatically.
 
