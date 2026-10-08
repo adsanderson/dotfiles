@@ -1,8 +1,14 @@
 return {
   {
-    "bjarneo/pixel.nvim",
-    name = "pixel",
-    priority = 1000,
+    "folke/tokyonight.nvim",
+    opts = {
+      style = "night",
+      transparent = true,
+      styles = {
+        sidebars = "transparent",
+        floats = "transparent",
+      },
+    },
   },
-  { "LazyVim/LazyVim", opts = { colorscheme = "pixel" } },
+  { "LazyVim/LazyVim", opts = { colorscheme = "tokyonight" } },
 }
