@@ -82,7 +82,7 @@ Select explicitly when detection is not what you want:
 ./bootstrap server
 ```
 
-The bootstrap installs only Nix when it is missing, runs the repository-pinned standalone Home Manager, then installs global mise tools. Managed zsh and Bash login and interactive startup source the single-user Nix profile, so later bootstrap runs reuse the installation. Home Manager cannot change the login shell, so the bootstrap runs `chsh` to the system zsh from `/etc/shells` when run from a terminal, and otherwise prints the command. The bootstrap does not install desktop or system packages. Before activation, Home Manager's supported `-b` option renames colliding regular files and directories with a timestamped `hm-backup-*` extension instead of deleting them. Home Manager deliberately refuses to back up foreign symlinks, so the managed `.inputrc` explicitly replaces an existing link while leaving that link's target untouched. Inspect without changing anything:
+The bootstrap installs only Nix when it is missing, runs the repository-pinned standalone Home Manager, then installs global mise tools. Managed zsh and Bash login and interactive startup source the single-user Nix profile, so later bootstrap runs reuse the installation. Home Manager cannot change the login shell, so the bootstrap uses an executable system zsh listed in `/etc/shells`. When native zsh is installed but not registered there, bootstrap prints the exact `/etc/shells` registration command instead of passing an invalid path to `chsh`; rerun bootstrap after registration. The bootstrap does not install desktop or system packages. Before activation, Home Manager's supported `-b` option renames colliding regular files and directories with a timestamped `hm-backup-*` extension instead of deleting them. Home Manager deliberately refuses to back up foreign symlinks, so the managed `.inputrc` explicitly replaces an existing link while leaving that link's target untouched. Inspect without changing anything:
 
 ```bash
 ./bootstrap laptop --check
@@ -148,7 +148,7 @@ The laptop profile installs JetBrains Mono Nerd Font, makes it the per-user Font
 
 ### WSL prerequisites
 
-Use an Arch-based WSL distribution with `git` and `curl`. The profile installs no desktop stack and no user services. When `wslview` is already available, it becomes `BROWSER`; otherwise no browser integration is forced.
+Use an Arch-based WSL distribution with `git`, `curl`, and native zsh. Home Manager owns the portable zsh package and configuration; the native executable only provides a system-registered login shell for `chsh`. The profile installs no desktop stack and no user services. When `wslview` is already available, it becomes `BROWSER`; otherwise no browser integration is forced.
 
 The WSL profile does not manage the terminal font or color palette because Windows Terminal renders both on the Windows host. Install JetBrains Mono Nerd Font on Windows, select `JetBrainsMono Nerd Font` as the Windows Terminal profile's font face, and choose any terminal color scheme whose ANSI slots retain their conventional meanings. Shared terminal tools consume those ANSI colors automatically; installing a font or terminal theme inside WSL would affect only Linux GUI applications such as WSLg clients.
 
