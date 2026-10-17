@@ -4,5 +4,10 @@ polkit_agent = true
 [lockscreen]
 lock_before_suspend = false
 
+[idle.behavior.screen-off]
+timeout = 600
+action = "screen_off"
+enabled = true
+
 [widget.workspaces]
 hide_when_empty = true
