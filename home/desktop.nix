@@ -11,6 +11,8 @@ in {
   home.sessionVariables.SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/ssh-agent.socket";
 
   home.file.".local/bin/kvm-toggle".source = outOfStore "bin/kvm-toggle";
+  home.file.".local/bin/niri-center-visible-columns".source =
+    outOfStore "bin/niri-center-visible-columns";
   home.file.".XCompose".source = outOfStore "config/xcompose/XCompose";
 
   home.packages = [ pkgs.nerd-fonts.jetbrains-mono ];

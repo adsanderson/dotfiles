@@ -1,6 +1,6 @@
     layout {
         gaps 8 // Gap between windows
-        center-focused-column "always" // Don’t auto-center focused column
+        center-focused-column "never" // The startup helper centers the visible column group instead.
         default-column-width { proportion 0.95; } // Open tiled windows at full available width
 
 

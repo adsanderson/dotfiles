@@ -1,5 +1,4 @@
 gui:
-  colorScheme: auto
   theme:
     activeBorderColor:
       - "#7aa2f7"
@@ -27,3 +26,4 @@ gui:
       - "#f7768e"
     defaultFgColor:
       - "#c0caf5"
+  colorScheme: auto

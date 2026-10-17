@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+center_visible_columns() {
+  niri msg action center-visible-columns >/dev/null 2>&1 || true
+}
+
+# Normalize the initial workspace before listening for subsequent changes.
+center_visible_columns
+
+while IFS= read -r event; do
+  case $event in
+    '{"WindowOpenedOrChanged":'* | \
+    '{"WindowClosed":'* | \
+    '{"WindowFocusChanged":'* | \
+    '{"WindowLayoutsChanged":'* | \
+    '{"WorkspaceActivated":'*)
+      center_visible_columns
+      ;;
+  esac
+done < <(niri msg --json event-stream)
