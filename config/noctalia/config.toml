@@ -1,6 +1,9 @@
 [shell]
 polkit_agent = true
 
+[shell.greeter_sync]
+auto_sync = true
+
 [lockscreen]
 lock_before_suspend = false
 
@@ -11,3 +14,7 @@ enabled = true
 
 [widget.workspaces]
 hide_when_empty = true
+
+[theme.templates]
+enable_builtin_templates = true
+builtin_ids = ["umbriel"]

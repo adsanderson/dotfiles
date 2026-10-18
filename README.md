@@ -2,7 +2,7 @@
 
 Portable terminal and development configuration for three standalone Home Manager profiles:
 
-- `laptop`: common terminal environment plus desktop utilities and CachyOS-specific Niri/Noctalia configuration
+- `laptop`: common terminal environment plus desktop utilities and CachyOS-specific Umbriel/Noctalia configuration
 - `work-wsl`: common terminal environment plus small WSL environment adjustments
 - `server`: common terminal environment with no desktop dependencies
 
@@ -14,9 +14,9 @@ Profile usernames are declared beside the targets in `flake.nix`. They currently
 
 ### Native OS package manager
 
-The OS owns the machine: the Niri and Noctalia packages, Wayland portals, PipeWire, display/login tools, drivers, Bluetooth, Docker and other system services, GUI applications, and system-wide fonts. This repository does not turn Arch, WSL, or a VPS into NixOS.
+The OS owns the machine: the Umbriel, Noctalia, and Noctalia Greeter packages, Wayland portals, PipeWire, display/login tools, drivers, Bluetooth, Docker and other system services, GUI applications, and system-wide fonts. This repository does not turn Arch, WSL, or a VPS into NixOS.
 
-The laptop profile manages standalone user configuration and its user-level font default. Its `home/cachyos.nix` layer owns the editable Niri and Noctalia configuration while their packages and system integration remain native-OS-owned.
+The laptop profile manages standalone user configuration and its user-level font default. Its `home/cachyos.nix` layer owns the editable Umbriel and Noctalia configuration while their packages and system integration remain native-OS-owned. Noctalia automatically syncs its appearance to an installed greeter; greetd configuration, greeter state, and display-manager activation remain native system state.
 
 ### Home Manager
 
@@ -25,7 +25,7 @@ Home Manager owns stable portable CLI programs and user configuration:
 - zsh (login shell, set by bootstrap) and Bash, Git, OpenSSH, Neovim, tmux, Herdr with Auto Title, btop, lazygit, fzf, ripgrep, fd, jq, zoxide, starship, mise, bat, eza, and GitHub CLI
 - editable files under `config/`, including portable Herdr, Herdr Auto Title, lazygit, GitHub CLI, and OpenCode preferences
 - desktop-only terminal, Compose, `kvm-toggle`, WhatsApp web-app launcher, and JetBrains Mono Nerd Font configuration
-- CachyOS-specific editable Niri and Noctalia configuration
+- CachyOS-specific editable Umbriel and Noctalia configuration
 
 Herdr is the default multiplexer: Home Manager installs it from the pinned nixpkgs, builds the pinned Auto Title plugin, links that plugin into Herdr, and manages their portable configuration. Auto Title names tabs and panes from their directory, Git branch, foreground process, SSH host, or agent task; agent tasks take precedence in split layouts, while manual names remain authoritative. Logs, sessions, plugin registry state, manual-name state, release notes, and generated color files remain machine-local. Interactive zsh starts or reattaches to the persistent Herdr session in plain terminals (not inside tmux, Herdr, or VS Code). Set `HERDR_AUTOSTART=0` to skip it for one terminal. Home Manager also applies the portable lazygit theme on every profile while leaving Noctalia's duplicate generated theme file machine-local.
 
@@ -71,7 +71,7 @@ cd ~/dotfiles
 Profile detection chooses:
 
 1. `work-wsl` when the kernel identifies WSL
-2. `laptop` when the current session is Hyprland
+2. `laptop` when the current session is Umbriel
 3. `server` otherwise
 
 Select explicitly when detection is not what you want:
@@ -134,7 +134,7 @@ A container does not emulate the WSL kernel, Windows interop, systemd, or `wslvi
 
 Use the native package manager for the desktop stack. The managed configuration expects:
 
-- Niri and Noctalia
+- Umbriel (`umbriel-git`, including `xdg-desktop-portal-umbriel-git`), Noctalia, and `noctalia-greeter`
 - Foot or Alacritty
 - Firefox and Nautilus for the configured launch bindings
 - Chromium for the managed WhatsApp web-app launcher
@@ -144,7 +144,44 @@ Use the native package manager for the desktop stack. The managed configuration 
 - the `capitaine-cursors` cursor theme
 - `ddcutil` and working DDC permissions for `kvm-toggle`
 
-The laptop profile installs JetBrains Mono Nerd Font, makes it the per-user Fontconfig default for monospace, sans-serif, and serif families, and selects it explicitly in Foot and Alacritty. It also creates a WhatsApp launcher that opens `https://web.whatsapp.com/` in Chromium's app mode with the official web-app icon. Its CachyOS layer links `~/.config/niri` and `~/.config/noctalia` to the editable repository sources. Niri starts the managed `niri-center-visible-columns` helper with each compositor session; the helper listens to Niri's event stream and keeps the visible column group centered after window, focus, layout, or workspace changes. Noctalia turns the displays off after ten idle minutes without locking the session and restores them on activity; manual locking remains available through the Niri binding. Home Manager intentionally does not install the compositor, shell, or GUI applications such as Chromium, 1Password, VLC, and Obsidian; it does not enable or replace current user systemd units or manage system desktop infrastructure. Bootstrap retains timestamped backups of colliding managed files.
+The laptop profile installs JetBrains Mono Nerd Font, makes it the per-user Fontconfig default for monospace, sans-serif, and serif families, and selects it explicitly in Foot and Alacritty. It also creates a WhatsApp launcher that opens `https://web.whatsapp.com/` in Chromium's app mode with the official web-app icon. Its CachyOS layer links `~/.config/umbriel/config.toml` and `~/.config/noctalia` to editable repository sources; Noctalia's generated `~/.config/umbriel/noctalia.toml` remains machine-local beside the managed config. Umbriel starts Noctalia, uses the scrolling layout, preserves the established application, workspace, media, screenshot, and session bindings where Umbriel has equivalents, and uses the built-in Noctalia theme template. Noctalia turns the displays off after ten idle minutes without locking the session and restores them on activity; manual locking remains available through the Umbriel binding. Home Manager intentionally does not install the compositor, shell, portal, or GUI applications such as Chromium, 1Password, VLC, and Obsidian; it does not enable or replace current user systemd units or manage system desktop infrastructure. Bootstrap retains timestamped backups of colliding managed files. Install the native packages, apply the laptop profile, then select **Umbriel** in the display manager.
+
+#### Noctalia Greeter
+
+The greeter is native system infrastructure, not a Home Manager service. Install it and let the package pull in greetd:
+
+```bash
+sudo pacman -Syu noctalia-greeter
+command -v noctalia-greeter-session
+```
+
+Merge these values into `/etc/greetd/config.toml`; keep the package's existing `[terminal]` section and any unrelated settings:
+
+```toml
+[default_session]
+command = "/usr/bin/noctalia-greeter-session"
+user = "greeter"
+```
+
+Initialize the package-owned state, grant `adams` passwordless access only to the constrained appearance-sync action, and replace SDDM at the next boot:
+
+```bash
+sudo noctalia-greeter-apply-appearance --setup-system
+sudo noctalia-greeter passwordless-sync enable adams
+sudo systemctl disable sddm.service
+sudo systemctl enable greetd.service
+sudo reboot
+```
+
+Do not use `disable --now` from the graphical session: that would terminate the current desktop. After reboot, select **Umbriel** once; Noctalia Greeter remembers that session. The managed `[shell.greeter_sync]` setting copies Noctalia's wallpaper, palette, font, and output layout when they change. `/var/lib/noctalia-greeter/greeter.toml`, `sync.toml`, copied wallpapers, and the systemd service selection remain machine-local.
+
+If the greeter does not start, switch to a TTY and inspect `systemctl status greetd`. To restore SDDM for the next boot:
+
+```bash
+sudo systemctl disable greetd.service
+sudo systemctl enable sddm.service
+sudo reboot
+```
 
 ### WSL prerequisites
 

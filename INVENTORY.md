@@ -22,11 +22,11 @@ This is an intentional-tool inventory, not a package dump.
 | SSH client and agent integration | `home/common.nix`; `home/desktop.nix` | Home Manager common + desktop environment | Mostly | Manage portable GitHub host settings everywhere and expose the package-provided agent socket on laptops. Keep private keys, `known_hosts`, socket enablement, and forwarded agents machine-local. |
 | Go, Node, pnpm, Python | Repository `mise.toml` files | Each repository | Yes | Do not add language runtimes to Home Manager or global mise. |
 | uv | `config/mise/config.toml` | mise global | Yes | Keep globally as a project/tool manager; projects still declare their Python version and tools. |
-| Personal scripts | `bin` | Profile-specific | Mixed | Manage only authored scripts; do not copy generated wrappers. The desktop profile links `kvm-toggle` and the event-driven `niri-center-visible-columns` helper into `~/.local/bin`. |
-| Niri and Noctalia packages/system integration | Native system configuration | Native OS | No | Install and integrate the compositor and shell through CachyOS; Home Manager owns only the authored user configuration. |
+| Personal scripts | `bin` | Profile-specific | Mixed | Manage only authored scripts; do not copy generated wrappers. The desktop profile links `kvm-toggle` into `~/.local/bin`. |
+| Umbriel, Noctalia, and Noctalia Greeter packages/system integration | Native system configuration | Native OS | No | Install and integrate the compositor, portal, shell, greetd, and greeter through CachyOS; Home Manager owns only the authored user configuration. Keep display-manager selection and `/var/lib/noctalia-greeter` state machine-local. |
 | Terminal settings | `config/foot`; `config/alacritty` | Home Manager desktop | Mostly | Let each terminal profile own its RGB palette; use JetBrains Mono Nerd Font in both laptop terminals and preserve standalone key encodings, padding, and OSC 52 behavior. Windows Terminal remains Windows-owned for WSL. |
-| Niri compositor configuration | `config/niri` | Home Manager CachyOS layer | No | Preserve the current includes, input/display/layout behavior, key bindings, Noctalia startup/integration, window rules, CachyOS Niri blur settings, and automatic visible-column centering startup. |
-| Noctalia shell configuration | `config/noctalia` | Home Manager CachyOS layer | No | Preserve authored shell and lock-screen preferences. Noctalia powers displays off after ten idle minutes, restores them on activity, and leaves the session unlocked. |
+| Umbriel compositor configuration | `config/umbriel/config.toml` | Home Manager CachyOS layer | No | Preserve scrolling layout, input/display behavior, established key bindings where Umbriel has equivalents, Noctalia startup/integration, blur, and window/layer rules. Keep Noctalia's generated Umbriel palette machine-local. |
+| Noctalia shell configuration | `config/noctalia` | Home Manager CachyOS layer | No | Preserve authored shell and lock-screen preferences. Noctalia powers displays off after ten idle minutes, restores them on activity, leaves the session unlocked, and automatically syncs appearance and output settings to an installed Noctalia Greeter. |
 | 1Password desktop app | Official `1password` AUR package | Native OS | No | Install on the CachyOS laptop with `paru`; keep the application, browser integration, credentials, and state outside Home Manager and this repository. |
 | VLC desktop app | Signed CachyOS `vlc` package | Native OS | No | Install on the CachyOS laptop with `pacman`; keep the application and its state outside Home Manager and this repository. |
 | Obsidian desktop app | Signed Arch `obsidian` package | Native OS | No | Install on the CachyOS laptop with `pacman`; keep the application, vaults, credentials, plugins, and state outside Home Manager and this repository. |
@@ -35,13 +35,13 @@ This is an intentional-tool inventory, not a package dump.
 | Compose sequences | `config/xcompose/XCompose` | Home Manager desktop | Yes | Extend the standard locale definitions with personal identification shortcuts. |
 | KVM monitor switching | `bin/kvm-toggle` | Home Manager desktop | No | Preserve the utility; `ddcutil` remains OS-owned because it needs hardware and system permissions. |
 | User systemd units | Package-provided units | Native OS | No | Do not recreate them in Home Manager. The laptop uses the package-provided SSH agent socket; WSL/server profiles enable none. |
-| PipeWire, portals, Bluetooth, Niri and Noctalia packages, display stack, system-wide fonts, GUI apps, Docker services | Native packages/services | Native OS | No | Leave packages and system integration to native OS management. |
+| PipeWire, portals, Bluetooth, Umbriel and Noctalia packages, display stack, system-wide fonts, GUI apps, Docker services | Native packages/services | Native OS | No | Leave packages and system integration to native OS management. |
 | WSL environment | `home/wsl.nix` | Home Manager WSL | Profile-specific | Add only safe WSL defaults (`BROWSER=wslview` when available); Windows owns the terminal font, and the profile enables no desktop or user services. |
 | Headless environment | `home/server.nix` | Home Manager server | Profile-specific | Reuse the common terminal environment with no desktop dependencies. |
 
 ## Decisions
 
-- **Desktop portability:** desktop packages, services, and system-wide font configuration stay native-OS-owned. The CachyOS layer owns this laptop's Niri and Noctalia user configuration; the reusable desktop layer owns terminal, Compose, utility, and per-user font configuration.
+- **Desktop portability:** desktop packages, services, and system-wide font configuration stay native-OS-owned. The CachyOS layer owns this laptop's Umbriel and Noctalia user configuration; the reusable desktop layer owns terminal, Compose, utility, and per-user font configuration.
 - **Terminal breadth:** Foot is the primary terminal and Alacritty is the authored fallback. Inactive terminal variants are not copied.
 - **mise scope:** AI CLIs, OpenCode, and uv stay global because they update rapidly. Go, Node, pnpm, and Python versions remain repository-owned.
 - **Excluded application state:** GitHub `hosts.yml` and GnuPG state are sensitive; generated package metadata, locks, backups, and application state are not migrated.

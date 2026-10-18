@@ -4,7 +4,7 @@ let
   outOfStore = path: config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/${path}";
 in {
   xdg.configFile = {
-    "niri".source = outOfStore "config/niri";
+    "umbriel/config.toml".source = outOfStore "config/umbriel/config.toml";
     "noctalia".source = outOfStore "config/noctalia";
   };
 }
