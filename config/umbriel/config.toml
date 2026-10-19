@@ -22,6 +22,7 @@ QT_WAYLAND_DISABLE_WINDOWDECORATION = "1"
 scale = 1.25
 
 [input.keyboard]
+layout = "gb"
 numlock_toggle = true
 
 [input.touchpad]
