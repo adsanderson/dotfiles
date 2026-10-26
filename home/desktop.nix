@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, inputs, pkgs, ... }:
 let
   dotfilesRoot = "${config.home.homeDirectory}/dotfiles";
   outOfStore = path: config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/${path}";
@@ -13,7 +13,10 @@ in {
   home.file.".local/bin/kvm-toggle".source = outOfStore "bin/kvm-toggle";
   home.file.".XCompose".source = outOfStore "config/xcompose/XCompose";
 
-  home.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
+  home.packages = [
+    inputs.ai-usagebar.packages.${pkgs.stdenv.hostPlatform.system}.default
+    pkgs.nerd-fonts.jetbrains-mono
+  ];
 
   fonts.fontconfig = {
     enable = true;

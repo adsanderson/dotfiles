@@ -24,7 +24,7 @@ Home Manager owns stable portable CLI programs and user configuration:
 
 - zsh (login shell, set by bootstrap) and Bash, Git, OpenSSH, Neovim, tmux, Herdr with Auto Title, btop, lazygit, fzf, ripgrep, fd, jq, zoxide, starship, mise, bat, eza, and GitHub CLI
 - editable files under `config/`, including portable Herdr, Herdr Auto Title, lazygit, GitHub CLI, and OpenCode preferences
-- desktop-only terminal, Compose, `kvm-toggle`, WhatsApp web-app launcher, and JetBrains Mono Nerd Font configuration
+- desktop-only terminal, Compose, `ai-usagebar`, `kvm-toggle`, WhatsApp web-app launcher, and JetBrains Mono Nerd Font configuration
 - CachyOS-specific editable Umbriel and Noctalia configuration
 
 Herdr is the default multiplexer: Home Manager installs it from the pinned nixpkgs, builds the pinned Auto Title plugin, links that plugin into Herdr, and manages their portable configuration. Auto Title names tabs and panes from their directory, Git branch, foreground process, SSH host, or agent task; agent tasks take precedence in split layouts, while manual names remain authoritative. Logs, sessions, plugin registry state, manual-name state, release notes, and generated color files remain machine-local. Interactive zsh starts or reattaches to the persistent Herdr session in plain terminals (not inside tmux, Herdr, or VS Code). Set `HERDR_AUTOSTART=0` to skip it for one terminal. Home Manager also applies the portable lazygit theme on every profile while leaving Noctalia's duplicate generated theme file machine-local.
@@ -145,6 +145,8 @@ Use the native package manager for the desktop stack. The managed configuration 
 - `ddcutil` and working DDC permissions for `kvm-toggle`
 
 The laptop profile installs JetBrains Mono Nerd Font, makes it the per-user Fontconfig default for monospace, sans-serif, and serif families, and selects it explicitly in Foot and Alacritty. It also creates a WhatsApp launcher that opens `https://web.whatsapp.com/` in Chromium's app mode with the official web-app icon. Its CachyOS layer links `~/.config/umbriel/config.toml` and `~/.config/noctalia` to editable repository sources; Noctalia's generated `~/.config/umbriel/noctalia.toml` remains machine-local beside the managed config. Umbriel starts Noctalia, uses the scrolling layout, preserves the established application, workspace, media, screenshot, and session bindings where Umbriel has equivalents, and uses the built-in Noctalia theme template. Noctalia turns the displays off after ten idle minutes without locking the session and restores them on activity; manual locking remains available through the Umbriel binding. Home Manager intentionally does not install the compositor, shell, portal, or GUI applications such as Chromium, 1Password, VLC, and Obsidian; it does not enable or replace current user systemd units or manage system desktop infrastructure. Bootstrap retains timestamped backups of colliding managed files. Install the native packages, apply the laptop profile, then select **Umbriel** in the display manager.
+
+The laptop profile also installs `ai-usagebar` and `ai-usagebar-tui` from the pinned upstream flake. The Noctalia community plugin `felipeartur/ai-usagebar` consumes that executable; Noctalia owns plugin enablement, widget placement, and generated plugin state, while provider credentials and the generated `~/.config/ai-usagebar/config.toml` remain machine-local.
 
 #### Noctalia Greeter
 

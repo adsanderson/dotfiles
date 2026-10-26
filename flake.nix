@@ -7,9 +7,13 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ai-usagebar = {
+      url = "github:akitaonrails/ai-usagebar";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = inputs@{ nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -18,7 +22,7 @@
       };
       mkHome = username: modules: home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        extraSpecialArgs = { inherit username; };
+        extraSpecialArgs = { inherit inputs username; };
         inherit modules;
       };
       homeConfigurations = {
