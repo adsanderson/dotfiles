@@ -19,18 +19,18 @@ alias gcam='git commit -a -m'
 alias gcad='git commit -a --amend'
 alias t='tmux attach || tmux new -s Work'
 alias c='opencode --auto'
-alias cx='printf "\033[2J\033[3J\033[H" && claude --permission-mode auto'
+alias cl='printf "\033[2J\033[3J\033[H" && claude --permission-mode auto'
 alias cy='codex --approve-for-me'
 alias mup='MISE_MINIMUM_RELEASE_AGE=0 mise up'
 if command -v herdr >/dev/null 2>&1; then
   alias h='herdr'
 fi
 alias ic='tdl c'
-alias ix='tdl cx'
-alias icx='tdl c cx'
+alias ix='tdl cl'
+alias icx='tdl c cl'
 
 n() {
-  if (( $# == 0 )); then
+  if (($# == 0)); then
     command nvim .
   else
     command nvim "$@"
@@ -40,7 +40,7 @@ n() {
 if command -v zoxide >/dev/null 2>&1; then
   alias cd='zd'
   zd() {
-    if (( $# == 0 )); then
+    if (($# == 0)); then
       builtin cd ~ || return
     elif [[ -d $1 ]]; then
       builtin cd "$1" || return
