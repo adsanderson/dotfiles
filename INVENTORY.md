@@ -5,7 +5,7 @@ This is an intentional-tool inventory, not a package dump.
 | Setting/tool | Current source | Owner | Portable? | Action |
 |---|---|---|---|---|
 | Bash startup | `config/shell/bashrc` | Home Manager common | Yes | Keep the portable aliases, history behavior, completions, mise, starship, zoxide, and fzf integration. |
-| Shell aliases/functions | `config/shell/{aliases,functions}.sh` | Home Manager common | Mostly | Keep navigation, eza, fzf, Git, tmux, Herdr, compression, worktree, and SSH-forwarding helpers. |
+| Shell aliases/functions | `config/shell/{aliases,functions}.sh` | Home Manager common | Mostly | Keep navigation, eza, fzf, Git, tmux, Nix/mise update, Herdr, compression, worktree, and SSH-forwarding helpers. |
 | Shell PATH | Home Manager session path plus mise activation | Home Manager common + mise global | Mostly | Keep `~/.local/bin` and mise activation. Avoid duplicate or generated PATH entries. |
 | Readline behavior | `config/shell/inputrc` | Home Manager common | Yes | Keep completion and history-search behavior in an editable file. |
 | zsh startup | `config/shell/zshrc` | Home Manager common + bootstrap `chsh` | Yes | zsh is the login shell. Shared functions load under sticky ksh emulation so their bash-style arrays keep working. |

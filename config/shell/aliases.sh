@@ -22,6 +22,7 @@ alias c='opencode --auto'
 alias cl='printf "\033[2J\033[3J\033[H" && claude --permission-mode auto'
 alias cy='codex --approve-for-me'
 alias mup='MISE_MINIMUM_RELEASE_AGE=0 mise up'
+alias nup='nix flake update --flake "$HOME/dotfiles" && home-manager switch --flake "$HOME/dotfiles#$DOTFILES_PROFILE"'
 if command -v herdr >/dev/null 2>&1; then
   alias h='herdr'
 fi

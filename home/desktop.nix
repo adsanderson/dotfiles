@@ -8,6 +8,8 @@ let
   };
 in {
   # Use Arch's package-provided ssh-agent socket; enabling it remains machine-local.
+  home.sessionVariables.DOTFILES_PROFILE = "laptop";
+
   home.sessionVariables.SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/ssh-agent.socket";
 
   home.file.".local/bin/kvm-toggle".source = outOfStore "bin/kvm-toggle";

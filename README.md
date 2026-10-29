@@ -207,18 +207,20 @@ home-manager switch --flake "$HOME/dotfiles#work-wsl"
 home-manager switch --flake "$HOME/dotfiles#server"
 ```
 
-Update Home Manager and Nix packages:
+Update Home Manager and Nix packages for the active profile:
 
 ```bash
-cd ~/dotfiles
-nix flake update
-home-manager switch --flake ".#laptop"  # choose this machine's profile
+nup
 ```
+
+`nup` updates `~/dotfiles/flake.lock` and applies the profile named by
+`DOTFILES_PROFILE`, which Home Manager sets to `laptop`, `work-wsl`, or
+`server`.
 
 Update global mise-managed tools:
 
 ```bash
-mise up
+mup
 mise prune
 ```
 
