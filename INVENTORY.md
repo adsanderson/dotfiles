@@ -15,7 +15,7 @@ This is an intentional-tool inventory, not a package dump.
 | Git identity and defaults | `config/git/config` | Home Manager common | Yes | Keep the consolidated editable config and global ignore. The default branch is `main`. |
 | lazygit | `config/lazygit/config.yml` | Home Manager common | Yes | Preserve semantic named-color overrides and automatic light/dark detection as an out-of-store symlink on every profile; exclude Noctalia's duplicate generated theme file. |
 | Starship | `config/starship/starship.toml` | Home Manager common | Yes | Preserve as an out-of-store symlink and use terminal ANSI color names rather than an RGB palette. |
-| Core CLI (`bat`, `btop`, `eza`, `fd`, `fzf`, `git`, `jq`, `lazygit`, `neovim`, `openssh`, `ripgrep`, `starship`, `tmux`, `zoxide`) | `home/packages.nix` | Home Manager common | Yes | Install through Home Manager on all profiles. |
+| Core CLI (`bat`, `btop`, `eza`, `fd`, `fzf`, `git`, `jq`, `lazydocker`, `lazygit`, `neovim`, `openssh`, `ripgrep`, `starship`, `tmux`, `zoxide`) | `home/packages.nix` | Home Manager common | Yes | Install through Home Manager on all profiles. |
 | mise binary | `home/packages.nix` | Home Manager common | Yes | Retain mise as the runtime/tool manager. |
 | AI/dev CLIs (`claude`, `codex`, `gemini`, `oh-my-pi`) | `config/mise/config.toml` | mise global | Yes | Keep fast-moving CLIs at `latest`; preserve only authored configuration. |
 | GitHub CLI | `home/packages.nix`; `config/gh/config.yml` | Home Manager common | Yes | Preserve portable preferences, SSH Git protocol, and aliases. Never migrate credential-bearing `hosts.yml`. |

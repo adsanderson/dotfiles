@@ -22,7 +22,7 @@ The laptop profile manages standalone user configuration and its user-level font
 
 Home Manager owns stable portable CLI programs and user configuration:
 
-- zsh (login shell, set by bootstrap) and Bash, Git, OpenSSH, Neovim, tmux, Herdr with Auto Title, btop, lazygit, fzf, ripgrep, fd, jq, zoxide, starship, mise, bat, eza, and GitHub CLI
+- zsh (login shell, set by bootstrap) and Bash, Git, OpenSSH, Neovim, tmux, Herdr with Auto Title, btop, lazydocker, lazygit, fzf, ripgrep, fd, jq, zoxide, starship, mise, bat, eza, and GitHub CLI
 - editable files under `config/`, including portable Herdr, Herdr Auto Title, lazygit, GitHub CLI, and OpenCode preferences
 - desktop-only terminal, Compose, `ai-usagebar`, `kvm-toggle`, WhatsApp web-app launcher, and JetBrains Mono Nerd Font configuration
 - CachyOS-specific editable Umbriel and Noctalia configuration

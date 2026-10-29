@@ -11,6 +11,7 @@
     herdr
     jq
     lazygit
+    lazydocker
     mise
     neovim
     openssh
